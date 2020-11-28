@@ -4,8 +4,8 @@ import interpreter.exp.Expression;
 
 public class PairExpression extends SelfEvaluatingExpression {
 
-    private final Expression car;
-    private final Expression cdr;
+    private Expression car;
+    private Expression cdr;
 
     private PairExpression(Expression car, Expression cdr) {
         this.car = car;
@@ -18,6 +18,16 @@ public class PairExpression extends SelfEvaluatingExpression {
 
     public Expression cdr() {
         return cdr;
+    }
+
+    public PairExpression setCar(Expression car) {
+        this.car = car;
+        return this;
+    }
+
+    public PairExpression setCdr(Expression cdr) {
+        this.cdr = cdr;
+        return this;
     }
 
     public static PairExpression cons(Expression car, Expression cdr) {

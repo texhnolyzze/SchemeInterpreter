@@ -11,14 +11,22 @@ public abstract class CompoundExpression implements Expression {
     public CompoundExpression(List<Object> list, Analyzer analyzer) {
     }
 
-    protected void assertNumArgs(List<Object> args, int expected) {
-        if (args.size() - 1 != expected)
-            throw new IllegalArgumentException(getClass().getSimpleName() + ": expected " + expected + " args, got " + (args.size() - 1));
+    protected void assertNumArgs(List<?> args, int expected) {
+        assertNumArgs(1, args, expected);
+    }
+
+    protected void assertNumArgs(int offset, List<?> args, int expected) {
+        if (args.size() - offset != expected)
+            throw new IllegalArgumentException(getClass().getSimpleName() + ": expected " + expected + " args, got " + (args.size() - offset));
+    }
+
+    protected void assertAtLeastNumArgs(int offset, List<Object> args, int expected) {
+        if (args.size() - offset < expected)
+            throw new IllegalArgumentException(getClass().getSimpleName() + ": expected at least " + expected + " args, got " + (args.size() - offset));
     }
 
     protected void assertAtLeastNumArgs(List<Object> args, int expected) {
-        if (args.size() - 1 < expected)
-            throw new IllegalArgumentException(getClass().getSimpleName() + ": expected at least " + expected + " args, got " + (args.size() - 1));
+        assertAtLeastNumArgs(1, args, expected);
     }
 
     protected void assertType(Expression expression, Class<? extends Expression> expected) {
@@ -29,6 +37,17 @@ public abstract class CompoundExpression implements Expression {
     protected void assertNotNull(Expression expression) {
         if (expression == NilExpression.INSTANCE)
             throw new IllegalArgumentException("nil pointer dereference");
+    }
+
+    protected void assertSymbol(Object o) {
+        boolean symbol = o instanceof String && ((String) o).charAt(0) != '"';
+        if (!symbol)
+            throw new IllegalArgumentException(getClass().getSimpleName() + ": symbol expected, got " + o);
+    }
+
+    protected void assertList(Object o) {
+        if (!(o instanceof List))
+            throw new IllegalArgumentException(getClass().getSimpleName() + ": list expected, got " + o);
     }
 
 }

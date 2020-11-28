@@ -11,7 +11,6 @@ import java.util.Map;
 public class Driver {
 
     private final Environment rootEnvironment;
-    private final Map<String, Class<? extends Expression>> predefined;
     private final InOut inOut;
     private final LispReader reader;
     private final Analyzer analyzer;
@@ -22,7 +21,6 @@ public class Driver {
         InOut inOut
     ) {
         this.rootEnvironment = rootEnvironment;
-        this.predefined = predefined;
         this.inOut = inOut;
         this.reader = new LispReader();
         this.analyzer = new Analyzer(inOut, predefined);
@@ -55,6 +53,7 @@ public class Driver {
             for (Object exp : read) {
                 eval(exp);
             }
+            inOut.out().println("We're done too");
         } catch (IllegalArgumentException e) {
             inOut.out().println("Error during evaluation: " + e.getMessage());
         }
@@ -86,6 +85,11 @@ public class Driver {
         predefined.put("null?", IsNilExpression.class);
         predefined.put("eq?", EqExpression.class);
         predefined.put("define", DefineExpression.class);
+        predefined.put("set!", SetExpression.class);
+        predefined.put("lambda", LambdaExpression.class);
+        predefined.put("begin", BeginExpression.class);
+        predefined.put("*", MulExpression.class);
+        predefined.put("list", ListExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

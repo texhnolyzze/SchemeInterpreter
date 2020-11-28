@@ -10,10 +10,6 @@ public class VariableExpression implements Expression {
         this.var = var;
     }
 
-    public String getName() {
-        return var;
-    }
-
     @Override
     public Expression eval(Environment env) {
         return env.lookup(var);

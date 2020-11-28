@@ -40,8 +40,8 @@ public class Environment {
         return new Environment(null, bindings);
     }
 
-    public static Environment extend(Environment root, Map<String, Expression> bindings) {
-        return new Environment(root, bindings);
+    public Environment extend(Map<String, Expression> bindings) {
+        return new Environment(this, bindings);
     }
 
 }

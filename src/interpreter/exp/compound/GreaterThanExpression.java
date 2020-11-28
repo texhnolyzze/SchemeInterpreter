@@ -3,22 +3,33 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
-import interpreter.exp.self.BooleanExpression;
+import interpreter.exp.self.FalseExpression;
+import interpreter.exp.self.NumberExpression;
+import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
 
 public class GreaterThanExpression extends CompoundExpression {
 
-    private final LessThanExpression exp;
+    private final Expression left;
+    private final Expression right;
 
     public GreaterThanExpression(List<Object> list, Analyzer analyzer) {
         super(list, analyzer);
-        this.exp = new LessThanExpression(list, analyzer);
+        assertNumArgs(list, 2);
+        this.left = analyzer.analyze(list.get(1));
+        this.right = analyzer.analyze(list.get(2));
     }
 
     @Override
     public Expression eval(Environment env) {
-        return ((BooleanExpression) exp.eval(env)).not();
+        Expression l = left.eval(env);
+        assertNotNull(l);
+        assertType(l, NumberExpression.class);
+        Expression r = right.eval(env);
+        assertNotNull(r);
+        assertType(r, NumberExpression.class);
+        return ((NumberExpression) l).compare(((NumberExpression) r)) > 0 ? TrueExpression.INSTANCE : FalseExpression.INSTANCE;
     }
 
 }

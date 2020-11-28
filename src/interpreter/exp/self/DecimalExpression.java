@@ -44,8 +44,14 @@ public class DecimalExpression extends NumberExpression {
     }
 
     @Override
-    public NumberExpression sub(NumberExpression eval) {
-        this.value -= eval.doubleValue();
+    public NumberExpression sub(NumberExpression right) {
+        this.value -= right.doubleValue();
+        return this;
+    }
+
+    @Override
+    public NumberExpression mul(NumberExpression right) {
+        this.value *= right.doubleValue();
         return this;
     }
 

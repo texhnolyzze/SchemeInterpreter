@@ -2,6 +2,7 @@ package interpreter;
 
 import interpreter.exp.*;
 import interpreter.exp.VariableExpression;
+import interpreter.exp.compound.ApplyExpression;
 import interpreter.exp.self.*;
 
 import java.lang.reflect.Constructor;
@@ -54,6 +55,8 @@ public class Analyzer {
             List<Object> list = (List<Object>) exp;
             if (list.isEmpty())
                 throw new IllegalArgumentException("Empty expression");
+            if (list.get(0).getClass() != String.class)
+                throw new IllegalArgumentException("Procedure call must be named");
             String type = (String) list.get(0);
             Class<? extends Expression> c = predefined.get(type);
             if (c != null) {
@@ -70,7 +73,7 @@ public class Analyzer {
                     return fail((IllegalArgumentException) e.getCause());
                 }
             } else {
-                return null;
+                return new ApplyExpression(list, this);
             }
         }
     }

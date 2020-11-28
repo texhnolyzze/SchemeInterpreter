@@ -56,4 +56,13 @@ public class IntExpression extends NumberExpression {
         return new DecimalExpression(this.value - right.doubleValue());
     }
 
+    @Override
+    public NumberExpression mul(NumberExpression right) {
+        if (right.getClass() == IntExpression.class) {
+            value *= right.longValue();
+            return this;
+        }
+        return new DecimalExpression(this.value * right.doubleValue());
+    }
+
 }

@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.self.NilExpression;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -22,7 +23,7 @@ public class PrintExpression extends CompoundExpression {
     @Override
     public Expression eval(Environment env) {
         out.println(arg.eval(env));
-        return null;
+        return NilExpression.INSTANCE;
     }
 
 }

@@ -91,6 +91,8 @@ public class LispReader {
         }
         throwOn(readingString, "Unclosed string literal starting", stringStart);
         throwOn(!stack.isEmpty(), "Unexpected EOF");
+        if (result == null && readingSymbol)
+            result = cons(next.toString(), exp.length());
         return result;
     }
 

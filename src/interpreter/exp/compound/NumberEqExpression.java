@@ -3,7 +3,6 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
-import interpreter.exp.NumberExpressionUtil;
 import interpreter.exp.self.FalseExpression;
 import interpreter.exp.self.NumberExpression;
 import interpreter.exp.self.TrueExpression;

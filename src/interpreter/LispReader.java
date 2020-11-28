@@ -1,27 +1,28 @@
 package interpreter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static interpreter.Pair.*;
 
 public class LispReader {
 
     public List<Object> read(String exp) {
+        if (exp.isBlank())
+            return Collections.emptyList();
         List<Object> result = new ArrayList<>(1);
         int from = 0;
         do {
-            Pair<Object, Integer> next = read(exp, from);
-            result.add(next.car());
-            from = next.cdr();
+            Object[] next = read(exp, from);
+            result.add(next[0]);
+            from = (int) next[1];
         } while (from < exp.length());
         return result;
     }
 
-    private Pair<Object, Integer> read(String exp, int from) {
+    private Object[] read(String exp, int from) {
         StringBuilder next = new StringBuilder();
-        Pair<Object, Integer> result = null;
+        Object[] result = null;
         LinkedList<Character> parenthesis = new LinkedList<>();
         LinkedList<List<Object>> stack = new LinkedList<>();
         int stringStart = -1;
@@ -91,6 +92,10 @@ public class LispReader {
         throwOn(readingString, "Unclosed string literal starting", stringStart);
         throwOn(!stack.isEmpty(), "Unexpected EOF");
         return result;
+    }
+
+    private Object[] cons(Object res, int i) {
+        return new Object[] {res, i};
     }
 
     private boolean finalizeSymbol(LinkedList<List<Object>> stack, StringBuilder symbol, boolean readingSymbol) {

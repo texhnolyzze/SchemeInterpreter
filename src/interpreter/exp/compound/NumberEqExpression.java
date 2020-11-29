@@ -14,7 +14,7 @@ public class NumberEqExpression extends CompoundExpression {
     private final Expression left;
     private final Expression right;
 
-    public NumberEqExpression(List<Object> list, Analyzer analyzer) {
+    public NumberEqExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 2);
         this.left = analyzer.analyze(list.get(1));

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PlusExpression extends NumberCombineExpression {
 
-    public PlusExpression(List<Object> list, Analyzer analyzer) {
+    public PlusExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 

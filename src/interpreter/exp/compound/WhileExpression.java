@@ -13,7 +13,7 @@ public class WhileExpression extends CompoundExpression {
     private final Expression predicate;
     private final SequenceExpression body;
 
-    public WhileExpression(List<Object> list, Analyzer analyzer) {
+    public WhileExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
         this.predicate = analyzer.analyze(list.get(1));

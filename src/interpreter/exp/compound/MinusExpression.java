@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MinusExpression extends NumberCombineExpression {
 
-    public MinusExpression(List<Object> list, Analyzer analyzer) {
+    public MinusExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 

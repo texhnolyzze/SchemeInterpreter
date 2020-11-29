@@ -13,7 +13,7 @@ public class AndExpression extends CompoundExpression {
 
     private final List<Expression> args;
 
-    public AndExpression(List<Object> list, Analyzer analyzer) {
+    public AndExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
         this.args = new ArrayList<>(2);

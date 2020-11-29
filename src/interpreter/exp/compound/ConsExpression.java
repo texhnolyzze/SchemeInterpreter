@@ -12,7 +12,7 @@ public class ConsExpression extends CompoundExpression {
     private final Expression car;
     private final Expression cdr;
 
-    public ConsExpression(List<Object> list, Analyzer analyzer) {
+    public ConsExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 2);
         this.car = analyzer.analyze(list.get(1));

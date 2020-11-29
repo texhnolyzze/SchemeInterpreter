@@ -13,7 +13,7 @@ public class PrintExpression extends CompoundExpression {
     private final PrintStream out;
     private final Expression arg;
 
-    public PrintExpression(List<Object> list, Analyzer analyzer) {
+    public PrintExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 1);
         this.out = analyzer.inOut().out();

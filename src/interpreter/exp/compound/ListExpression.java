@@ -14,7 +14,7 @@ public class ListExpression extends CompoundExpression {
     
     private final List<Expression> list;
 
-    public ListExpression(List<Object> list, Analyzer analyzer) {
+    public ListExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         this.list = new ArrayList<>(0);
         for (int i = 1; i < list.size(); i++) {

@@ -13,7 +13,7 @@ public class IfExpression extends CompoundExpression {
     private final Expression consequent;
     private final Expression alternative;
 
-    public IfExpression(List<Object> list, Analyzer analyzer) {
+    public IfExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 3);
         this.predicate = analyzer.analyze(list.get(1));

@@ -13,7 +13,7 @@ public class OrExpression extends CompoundExpression {
 
     private final List<Expression> args;
 
-    public OrExpression(List<Object> list, Analyzer analyzer) {
+    public OrExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
         this.args = new ArrayList<>(2);

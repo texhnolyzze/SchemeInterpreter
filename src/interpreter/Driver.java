@@ -5,6 +5,7 @@ import interpreter.exp.Expression;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class Driver {
         BufferedReader r = new BufferedReader(new InputStreamReader(inOut.in()));
         StringBuilder next = new StringBuilder();
         while (true) {
-            s = r.readLine();
+            s = r.readLine().strip();
             if (s.equals("done")) {
                 process(next);
             } else if (s.equals("exit")) {
@@ -50,8 +51,9 @@ public class Driver {
         try {
             List<Object> read = reader.read(next.toString());
             inOut.out().println(read);
-            for (Object exp : read) {
-                eval(exp);
+            for (Iterator<Object> iterator = read.iterator(); iterator.hasNext(); ) {
+                Object exp = iterator.next();
+                eval(exp, !iterator.hasNext());
             }
             inOut.out().println("We're done too");
         } catch (IllegalArgumentException e) {
@@ -60,9 +62,11 @@ public class Driver {
         next.setLength(0);
     }
 
-    private void eval(Object obj) {
+    private void eval(Object obj, final boolean last) {
         Expression analyze = analyzer.analyze(obj);
-        analyze.eval(rootEnvironment);
+        Expression eval = analyze.eval(rootEnvironment);
+        if (last && eval.getClass() != PrintExpression.class)
+            inOut.out().println(eval);
     }
 
     public static void main(String[] args) throws IOException {

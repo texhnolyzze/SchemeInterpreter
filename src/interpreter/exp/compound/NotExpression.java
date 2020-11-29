@@ -11,7 +11,7 @@ public class NotExpression extends CompoundExpression {
 
     private final Expression arg;
 
-    public NotExpression(List<Object> list, Analyzer analyzer) {
+    public NotExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 1);
         this.arg = analyzer.analyze(list.get(1));

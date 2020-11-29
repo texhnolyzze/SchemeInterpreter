@@ -11,7 +11,7 @@ public class CarExpression extends CompoundExpression {
 
     private final Expression arg;
 
-    public CarExpression(List<Object> list, Analyzer analyzer) {
+    public CarExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 1);
         this.arg = analyzer.analyze(list.get(1));

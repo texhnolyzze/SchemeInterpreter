@@ -13,7 +13,7 @@ public class IsNilExpression extends CompoundExpression {
 
     private final Expression arg;
 
-    public IsNilExpression(List<Object> list, Analyzer analyzer) {
+    public IsNilExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 1);
         this.arg = analyzer.analyze(list.get(1));

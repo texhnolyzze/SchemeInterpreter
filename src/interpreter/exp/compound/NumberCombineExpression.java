@@ -12,7 +12,7 @@ public abstract class NumberCombineExpression extends CompoundExpression {
 
     private final List<Expression> args;
 
-    public NumberCombineExpression(List<Object> list, Analyzer analyzer) {
+    public NumberCombineExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
         this.args = new ArrayList<>(2);

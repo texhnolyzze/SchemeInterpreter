@@ -13,7 +13,7 @@ public class LambdaExpression extends CompoundExpression {
     private final SequenceExpression body;
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public LambdaExpression(List<Object> list, Analyzer analyzer) {
+    public LambdaExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
         assertList(list.get(1));

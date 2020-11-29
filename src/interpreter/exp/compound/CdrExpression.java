@@ -11,7 +11,7 @@ public class CdrExpression extends CompoundExpression {
 
     private final Expression arg;
 
-    public CdrExpression(List<Object> list, Analyzer analyzer) {
+    public CdrExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 1);
         this.arg = analyzer.analyze(list.get(1));

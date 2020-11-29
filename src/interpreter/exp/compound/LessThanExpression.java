@@ -14,7 +14,7 @@ public class LessThanExpression extends CompoundExpression {
     private final Expression left;
     private final Expression right;
 
-    public LessThanExpression(List<Object> list, Analyzer analyzer) {
+    public LessThanExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 2);
         this.left = analyzer.analyze(list.get(1));

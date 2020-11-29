@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MulExpression extends NumberCombineExpression {
 
-    public MulExpression(List<Object> list, Analyzer analyzer) {
+    public MulExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 

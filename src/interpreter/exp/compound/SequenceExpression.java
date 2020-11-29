@@ -12,7 +12,7 @@ public class SequenceExpression extends CompoundExpression {
 
     private final List<Expression> seq;
 
-    SequenceExpression(int index, List<Object> list, Analyzer analyzer) {
+    SequenceExpression(int index, List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(index, list, 1);
         this.seq = new ArrayList<>(1);

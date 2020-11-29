@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ModExpression extends NumberCombineExpression {
 
-    public ModExpression(List<Object> list, Analyzer analyzer) {
+    public ModExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 

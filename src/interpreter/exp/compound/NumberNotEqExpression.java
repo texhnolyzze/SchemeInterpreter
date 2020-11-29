@@ -11,7 +11,7 @@ public class NumberNotEqExpression extends CompoundExpression {
 
     private final NumberEqExpression exp;
 
-    public NumberNotEqExpression(List<Object> list, Analyzer analyzer) {
+    public NumberNotEqExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         this.exp = new NumberEqExpression(list, analyzer);
     }

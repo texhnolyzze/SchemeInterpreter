@@ -10,7 +10,7 @@ public class BeginExpression extends CompoundExpression {
 
     private final SequenceExpression seq;
 
-    public BeginExpression(List<Object> list, Analyzer analyzer) {
+    public BeginExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         this.seq = new SequenceExpression(1, list, analyzer);
     }

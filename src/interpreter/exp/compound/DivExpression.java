@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DivExpression extends NumberCombineExpression {
 
-    public DivExpression(List<Object> list, Analyzer analyzer) {
+    public DivExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 

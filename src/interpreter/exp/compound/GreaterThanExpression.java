@@ -14,7 +14,7 @@ public class GreaterThanExpression extends CompoundExpression {
     private final Expression left;
     private final Expression right;
 
-    public GreaterThanExpression(List<Object> list, Analyzer analyzer) {
+    public GreaterThanExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 2);
         this.left = analyzer.analyze(list.get(1));

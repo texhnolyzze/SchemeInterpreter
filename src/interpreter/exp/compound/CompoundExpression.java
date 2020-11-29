@@ -12,9 +12,9 @@ public abstract class CompoundExpression implements Expression {
 
     protected static final ThreadLocal<Boolean> IN_TRAMPOLINE = new ThreadLocal<>();
 
-    private final List<Object> src;
+    private final List<?> src;
 
-    public CompoundExpression(List<Object> list, Analyzer analyzer) {
+    public CompoundExpression(List<?> list, Analyzer analyzer) {
         this.src = list;
     }
 
@@ -27,12 +27,12 @@ public abstract class CompoundExpression implements Expression {
             throw new IllegalArgumentException(getClass().getSimpleName() + ": expected " + expected + " args, got " + (args.size() - offset));
     }
 
-    protected void assertAtLeastNumArgs(int offset, List<Object> args, int expected) {
+    protected void assertAtLeastNumArgs(int offset, List<?> args, int expected) {
         if (args.size() - offset < expected)
             throw new IllegalArgumentException(getClass().getSimpleName() + ": expected at least " + expected + " args, got " + (args.size() - offset));
     }
 
-    protected void assertAtLeastNumArgs(List<Object> args, int expected) {
+    protected void assertAtLeastNumArgs(List<?> args, int expected) {
         assertAtLeastNumArgs(1, args, expected);
     }
 

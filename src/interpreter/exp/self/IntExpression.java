@@ -8,10 +8,6 @@ public class IntExpression extends NumberExpression {
         this.value = value;
     }
 
-    public long getValue() {
-        return value;
-    }
-
     @Override
     public String toString() {
         return Long.toString(value);
@@ -63,6 +59,24 @@ public class IntExpression extends NumberExpression {
             return this;
         }
         return new DecimalExpression(this.value * right.doubleValue());
+    }
+
+    @Override
+    public NumberExpression mod(NumberExpression right) {
+        if (right.getClass() == IntExpression.class) {
+            value %= right.longValue();
+            return this;
+        }
+        return new DecimalExpression(this.doubleValue() % right.doubleValue());
+    }
+
+    @Override
+    public NumberExpression div(NumberExpression right) {
+        if (right.getClass() == IntExpression.class) {
+            value /= right.longValue();
+            return this;
+        }
+        return new DecimalExpression(this.doubleValue() / right.doubleValue());
     }
 
 }

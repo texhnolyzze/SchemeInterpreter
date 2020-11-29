@@ -5,15 +5,15 @@ import interpreter.exp.self.NumberExpression;
 
 import java.util.List;
 
-public class PlusExpression extends NumberCombineExpression {
+public class DivExpression extends NumberCombineExpression {
 
-    public PlusExpression(List<Object> list, Analyzer analyzer) {
+    public DivExpression(List<Object> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 
     @Override
     protected NumberExpression combine(NumberExpression left, NumberExpression right) {
-        return left.add(right);
+        return left.div(right);
     }
 
 }

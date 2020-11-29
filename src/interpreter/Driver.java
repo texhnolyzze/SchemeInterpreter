@@ -90,6 +90,9 @@ public class Driver {
         predefined.put("begin", BeginExpression.class);
         predefined.put("*", MulExpression.class);
         predefined.put("list", ListExpression.class);
+        predefined.put("%", ModExpression.class);
+        predefined.put("/", DivExpression.class);
+        predefined.put("while", WhileExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

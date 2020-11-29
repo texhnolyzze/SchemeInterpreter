@@ -23,20 +23,38 @@ public class ApplyExpression extends CompoundExpression {
 
     @Override
     public Expression eval(Environment env) {
-        Expression proc = env.lookup(procedure);
-        assertNotNull(proc);
-        assertType(proc, ProcedureExpression.class);
-        List<String> params = ((ProcedureExpression) proc).params();
+        ProcedureExpression proc = lookupProc(env);
+        Environment extended = extend(proc, env);
+        return proc.eval(extended);
+    }
+
+    void storeProcedureToCall(Environment env, TrampolineCtx ctx) {
+        ProcedureExpression proc = lookupProc(env);
+        Environment environment = extend(proc, env);
+        ctx.proc = proc;
+        ctx.extendedEnvironment = environment;
+    }
+
+    private ProcedureExpression lookupProc(Environment env) {
+        Expression exp = env.lookup(procedure);
+        assertNotNull(exp);
+        assertType(exp, ProcedureExpression.class);
+        return (ProcedureExpression) exp;
+    }
+
+    private Environment extend(ProcedureExpression proc, Environment env) {
+        List<String> params = proc.params();
         assertNumArgs(0, args, params.size());
         Iterator<String> iter1 = params.iterator();
         Iterator<Expression> iter2 = args.iterator();
+        Environment environment = proc.env();
         Map<String, Expression> bindings = new HashMap<>(params.size());
         while (iter1.hasNext()) {
             String param = iter1.next();
             Expression arg = iter2.next().eval(env);
             bindings.put(param, arg);
         }
-        return proc.eval(env.extend(bindings));
+        return environment.extend(bindings);
     }
 
 }

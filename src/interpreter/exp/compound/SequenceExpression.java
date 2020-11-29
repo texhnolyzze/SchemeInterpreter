@@ -23,20 +23,13 @@ public class SequenceExpression extends CompoundExpression {
 
     @Override
     public Expression eval(Environment env) {
-        Expression result;
         for (Iterator<Expression> iterator = seq.iterator();;) {
             Expression e = iterator.next();
             if (!iterator.hasNext()) {
-                if (e.getClass() == ApplyExpression.class)
-                    return e;
-                else {
-                    result = e.eval(env);
-                    break;
-                }
-            }
-            e.eval(env);
+                return trampoline(e, env);
+            } else
+                e.eval(env);
         }
-        return result;
     }
 
 }

@@ -1,14 +1,21 @@
 package interpreter.exp.compound;
 
 import interpreter.Analyzer;
+import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.ProcedureExpression;
 import interpreter.exp.self.NilExpression;
 
 import java.util.List;
 
 public abstract class CompoundExpression implements Expression {
 
+    private static final ThreadLocal<Boolean> IN_TRAMPOLINE = new ThreadLocal<>();
+
+    private final List<Object> src;
+
     public CompoundExpression(List<Object> list, Analyzer analyzer) {
+        this.src = list;
     }
 
     protected void assertNumArgs(List<?> args, int expected) {
@@ -48,6 +55,35 @@ public abstract class CompoundExpression implements Expression {
     protected void assertList(Object o) {
         if (!(o instanceof List))
             throw new IllegalArgumentException(getClass().getSimpleName() + ": list expected, got " + o);
+    }
+
+    protected Expression trampoline(Expression e, Environment env) {
+        if (e.getClass() != ApplyExpression.class)
+            return e.eval(env);
+        if (Boolean.TRUE.equals(IN_TRAMPOLINE.get()))
+            return e;
+        IN_TRAMPOLINE.set(true);
+        TrampolineCtx ctx = new TrampolineCtx();
+        try {
+            do {
+                ((ApplyExpression) e).storeProcedureToCall(env, ctx);
+                env = ctx.extendedEnvironment;
+                e = ctx.proc.eval(env);
+            } while (e.getClass() == ApplyExpression.class);
+            return e;
+        } finally {
+            IN_TRAMPOLINE.set(false);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return src.toString();
+    }
+
+    protected static class TrampolineCtx {
+        ProcedureExpression proc;
+        Environment extendedEnvironment;
     }
 
 }

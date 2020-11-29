@@ -27,7 +27,7 @@ public class LambdaExpression extends CompoundExpression {
 
     @Override
     public Expression eval(Environment env) {
-        return new ProcedureExpression(body, params);
+        return new ProcedureExpression(body, params, env);
     }
 
 }

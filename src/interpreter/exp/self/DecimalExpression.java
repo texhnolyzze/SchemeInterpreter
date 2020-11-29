@@ -55,4 +55,16 @@ public class DecimalExpression extends NumberExpression {
         return this;
     }
 
+    @Override
+    public NumberExpression mod(NumberExpression right) {
+        this.value %= right.doubleValue();
+        return this;
+    }
+
+    @Override
+    public NumberExpression div(NumberExpression right) {
+        this.value /= right.doubleValue();
+        return this;
+    }
+
 }

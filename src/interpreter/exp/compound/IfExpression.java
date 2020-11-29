@@ -25,8 +25,8 @@ public class IfExpression extends CompoundExpression {
     public Expression eval(Environment env) {
         Expression eval = predicate.eval(env);
         if (eval == TrueExpression.INSTANCE)
-            return consequent.eval(env);
-        return alternative.eval(env);
+            return trampoline(consequent, env);
+        return trampoline(alternative, env);
     }
 
 }

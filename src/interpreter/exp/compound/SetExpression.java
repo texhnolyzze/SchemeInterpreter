@@ -16,6 +16,7 @@ public class SetExpression extends CompoundExpression {
         super(list, analyzer);
         assertNumArgs(list, 2);
         assertSymbol(list.get(1));
+        assertNotPredefined(list.get(1), analyzer);
         this.var = (String) list.get(1);
         this.definition = analyzer.analyze(list.get(2));
     }

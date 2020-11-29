@@ -57,6 +57,11 @@ public abstract class CompoundExpression implements Expression {
             throw new IllegalArgumentException(getClass().getSimpleName() + ": list expected, got " + o);
     }
 
+    protected void assertNotPredefined(Object o, Analyzer analyzer) {
+        if (analyzer.predefined().containsKey(o))
+            throw new IllegalArgumentException(o + " is predefined, can't overwrite");
+    }
+
     protected Expression trampoline(Expression e, Environment env) {
         if (e.getClass() != ApplyExpression.class)
             return e.eval(env);

@@ -82,4 +82,8 @@ public class Analyzer {
         throw e;
     }
 
+    public Map<String, Class<? extends Expression>> predefined() {
+        return predefined;
+    }
+
 }

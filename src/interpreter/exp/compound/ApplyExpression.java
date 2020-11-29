@@ -23,9 +23,15 @@ public class ApplyExpression extends CompoundExpression {
 
     @Override
     public Expression eval(Environment env) {
-        ProcedureExpression proc = lookupProc(env);
-        Environment extended = extend(proc, env);
-        return proc.eval(extended);
+        Boolean prevState = IN_TRAMPOLINE.get();
+        IN_TRAMPOLINE.set(false);
+        try {
+            ProcedureExpression proc = lookupProc(env);
+            Environment extended = extend(proc, env);
+            return proc.eval(extended);
+        } finally {
+            IN_TRAMPOLINE.set(prevState);
+        }
     }
 
     void storeProcedureToCall(Environment env, TrampolineCtx ctx) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class CompoundExpression implements Expression {
 
-    private static final ThreadLocal<Boolean> IN_TRAMPOLINE = new ThreadLocal<>();
+    protected static final ThreadLocal<Boolean> IN_TRAMPOLINE = new ThreadLocal<>();
 
     private final List<Object> src;
 

@@ -9,7 +9,7 @@ import interpreter.exp.self.TrueExpression;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AndExpression extends CompoundExpression {
+public class AndExpression extends BaseExpression {
 
     private final List<Expression> args;
 

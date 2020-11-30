@@ -3,11 +3,11 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
-import interpreter.exp.ProcedureExpression;
+import interpreter.exp.Procedure;
 
 import java.util.*;
 
-public class ApplyExpression extends CompoundExpression {
+public class ApplyExpression extends BaseExpression {
 
     private final String procedure;
     private final List<Expression> args;
@@ -26,41 +26,47 @@ public class ApplyExpression extends CompoundExpression {
         Boolean prevState = IN_TRAMPOLINE.get();
         IN_TRAMPOLINE.set(false);
         try {
-            ProcedureExpression proc = lookupProc(env);
-            Environment extended = extendProcEnvironment(proc, env);
+            Procedure proc = lookupProc(env);
+            Environment extended = extendProcEnvironment(proc, env, false);
             return proc.eval(extended);
         } finally {
             IN_TRAMPOLINE.set(prevState);
         }
     }
 
-    void storeProcedureToCall(Environment env, TrampolineCtx ctx) {
-        ProcedureExpression proc = lookupProc(env);
-        Environment environment = extendProcEnvironment(proc, env);
+    void storeProcedureToCall(TrampolineCtx ctx) {
+        Procedure proc = lookupProc(ctx.environment);
         ctx.proc = proc;
-        ctx.extendedEnvironment = environment;
+        ctx.environment = extendProcEnvironment(proc, ctx.environment, true);
     }
 
-    private ProcedureExpression lookupProc(Environment env) {
+    private Procedure lookupProc(Environment env) {
         Expression exp = env.lookup(procedure);
         assertNotNull(exp);
-        assertType(exp, ProcedureExpression.class);
-        return (ProcedureExpression) exp;
+        assertType(exp, Procedure.class);
+        return (Procedure) exp;
     }
 
-    private Environment extendProcEnvironment(ProcedureExpression proc, Environment env) {
+    private Environment extendProcEnvironment(Procedure proc, Environment env, boolean overwrite) {
         List<String> params = proc.params();
         assertNumArgs(0, args, params.size());
         Iterator<String> iter1 = params.iterator();
         Iterator<Expression> iter2 = args.iterator();
         Environment procEnvironment = proc.env();
-        Map<String, Expression> boundArgs = new HashMap<>(params.size());
+        Map<String, Expression> boundArgs = overwrite ? null : new HashMap<>(params.size());
         while (iter1.hasNext()) {
             String param = iter1.next();
             Expression arg = iter2.next().eval(env);
-            boundArgs.put(param, arg);
+            if (overwrite)
+                env.define(param, arg);
+            else
+                boundArgs.put(param, arg);
         }
-        return procEnvironment.extend(boundArgs);
+        if (overwrite) {
+            env.retailAll(params);
+            return env;
+        } else
+            return procEnvironment.extend(boundArgs);
     }
 
 }

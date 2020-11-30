@@ -5,21 +5,21 @@ import interpreter.exp.compound.SequenceExpression;
 
 import java.util.List;
 
-public class ProcedureExpression implements Expression {
+public class Procedure implements Expression {
 
-    private final SequenceExpression sequence;
+    private final SequenceExpression body;
     private final List<String> params;
-    private final Environment env;
+    private final Environment env; // environment in which procedure was defined
 
-    public ProcedureExpression(SequenceExpression sequence, List<String> params, Environment env) {
-        this.sequence = sequence;
+    public Procedure(SequenceExpression body, List<String> params, Environment env) {
+        this.body = body;
         this.params = params;
         this.env = env;
     }
 
     @Override
     public Expression eval(Environment env) {
-        return sequence.eval(env);
+        return body.eval(env);
     }
 
     public List<String> params() {

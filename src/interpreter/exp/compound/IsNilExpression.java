@@ -9,7 +9,7 @@ import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
 
-public class IsNilExpression extends CompoundExpression {
+public class IsNilExpression extends BaseExpression {
 
     private final Expression arg;
 

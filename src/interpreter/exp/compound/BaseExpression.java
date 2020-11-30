@@ -3,18 +3,18 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
-import interpreter.exp.ProcedureExpression;
+import interpreter.exp.Procedure;
 import interpreter.exp.self.NilExpression;
 
 import java.util.List;
 
-public abstract class CompoundExpression implements Expression {
+public abstract class BaseExpression implements Expression {
 
     protected static final ThreadLocal<Boolean> IN_TRAMPOLINE = new ThreadLocal<>();
 
     private final List<?> src;
 
-    public CompoundExpression(List<?> list, Analyzer analyzer) {
+    public BaseExpression(List<?> list, Analyzer analyzer) {
         this.src = list;
     }
 
@@ -62,6 +62,11 @@ public abstract class CompoundExpression implements Expression {
             throw new IllegalArgumentException(o + " is predefined, can't overwrite");
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    protected void append(List left, List right) {
+        left.addAll(right);
+    }
+
     protected Expression trampoline(Expression e, Environment env) {
         if (e.getClass() != ApplyExpression.class)
             return e.eval(env);
@@ -69,11 +74,11 @@ public abstract class CompoundExpression implements Expression {
             return e;
         IN_TRAMPOLINE.set(true);
         TrampolineCtx ctx = new TrampolineCtx();
+        ctx.environment = env;
         try {
             do {
-                ((ApplyExpression) e).storeProcedureToCall(env, ctx);
-                env = ctx.extendedEnvironment;
-                e = ctx.proc.eval(env);
+                ((ApplyExpression) e).storeProcedureToCall(ctx);
+                e = ctx.proc.eval(ctx.environment);
             } while (e.getClass() == ApplyExpression.class);
             return e;
         } finally {
@@ -87,8 +92,8 @@ public abstract class CompoundExpression implements Expression {
     }
 
     protected static class TrampolineCtx {
-        ProcedureExpression proc;
-        Environment extendedEnvironment;
+        Procedure proc;
+        Environment environment;
     }
 
 }

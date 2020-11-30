@@ -3,6 +3,7 @@ package interpreter;
 import interpreter.exp.Expression;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Environment {
@@ -36,12 +37,20 @@ public class Environment {
         throw new IllegalArgumentException("Variable " + key + " is undefined");
     }
 
+    public Environment copy() {
+        return new Environment(this.root, new HashMap<>(this.bindings));
+    }
+
     public static Environment create(Map<String, Expression> bindings) {
         return new Environment(null, bindings);
     }
 
     public Environment extend(Map<String, Expression> bindings) {
         return new Environment(this, bindings);
+    }
+
+    public void retailAll(List<String> keys) {
+        this.bindings.keySet().retainAll(keys);
     }
 
 }

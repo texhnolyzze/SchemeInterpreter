@@ -1,24 +1,18 @@
 package interpreter.exp.compound;
 
 import interpreter.Analyzer;
-import interpreter.Environment;
-import interpreter.exp.Expression;
-import interpreter.exp.self.BooleanExpression;
 
 import java.util.List;
 
-public class NumberNotEqExpression extends CompoundExpression {
-
-    private final NumberEqExpression exp;
+public class NumberNotEqExpression extends NumberCompareExpression {
 
     public NumberNotEqExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
-        this.exp = new NumberEqExpression(list, analyzer);
     }
 
     @Override
-    public Expression eval(Environment env) {
-        return ((BooleanExpression) exp.eval(env)).not();
+    protected boolean matches(long compare) {
+        return compare != 0;
     }
 
 }

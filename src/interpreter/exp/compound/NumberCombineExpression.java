@@ -8,7 +8,7 @@ import interpreter.exp.self.NumberExpression;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class NumberCombineExpression extends CompoundExpression {
+public abstract class NumberCombineExpression extends BaseExpression {
 
     private final List<Expression> args;
 

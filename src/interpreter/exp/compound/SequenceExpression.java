@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SequenceExpression extends CompoundExpression {
+public class SequenceExpression extends BaseExpression {
 
     private final List<Expression> seq;
 

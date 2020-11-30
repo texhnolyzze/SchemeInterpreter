@@ -7,7 +7,7 @@ import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
 
-public class IfExpression extends CompoundExpression {
+public class IfExpression extends BaseExpression {
 
     private final Expression predicate;
     private final Expression consequent;

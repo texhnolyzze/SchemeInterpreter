@@ -8,7 +8,7 @@ import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
 
-public class WhileExpression extends CompoundExpression {
+public class WhileExpression extends BaseExpression {
 
     private final Expression predicate;
     private final SequenceExpression body;

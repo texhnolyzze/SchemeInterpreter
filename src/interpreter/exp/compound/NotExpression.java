@@ -7,7 +7,7 @@ import interpreter.exp.self.BooleanExpression;
 
 import java.util.List;
 
-public class NotExpression extends CompoundExpression {
+public class NotExpression extends BaseExpression {
 
     private final Expression arg;
 

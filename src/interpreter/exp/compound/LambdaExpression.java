@@ -3,11 +3,11 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
-import interpreter.exp.ProcedureExpression;
+import interpreter.exp.Procedure;
 
 import java.util.List;
 
-public class LambdaExpression extends CompoundExpression {
+public class LambdaExpression extends BaseExpression {
 
     private final List<String> params;
     private final SequenceExpression body;
@@ -27,7 +27,7 @@ public class LambdaExpression extends CompoundExpression {
 
     @Override
     public Expression eval(Environment env) {
-        return new ProcedureExpression(body, params, env);
+        return new Procedure(body, params, env);
     }
 
 }

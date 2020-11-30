@@ -6,7 +6,7 @@ import interpreter.exp.Expression;
 
 import java.util.List;
 
-public class BeginExpression extends CompoundExpression {
+public class BeginExpression extends BaseExpression {
 
     private final SequenceExpression seq;
 

@@ -1,6 +1,6 @@
 package interpreter;
 
-import interpreter.exp.*;
+import interpreter.exp.Expression;
 import interpreter.exp.VariableExpression;
 import interpreter.exp.compound.ApplyExpression;
 import interpreter.exp.self.*;

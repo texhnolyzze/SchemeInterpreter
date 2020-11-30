@@ -1,9 +1,11 @@
 package interpreter;
 
-import interpreter.exp.compound.*;
 import interpreter.exp.Expression;
+import interpreter.exp.compound.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -65,7 +67,7 @@ public class Driver {
     private void eval(Object obj, final boolean last) {
         Expression analyze = analyzer.analyze(obj);
         Expression eval = analyze.eval(rootEnvironment);
-        if (last && eval.getClass() != PrintExpression.class)
+        if (last && analyze.getClass() != PrintExpression.class)
             inOut.out().println(eval);
     }
 

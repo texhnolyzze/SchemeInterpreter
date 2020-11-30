@@ -7,7 +7,7 @@ import interpreter.exp.self.PairExpression;
 
 import java.util.List;
 
-public class ConsExpression extends CompoundExpression {
+public class ConsExpression extends BaseExpression {
 
     private final Expression car;
     private final Expression cdr;

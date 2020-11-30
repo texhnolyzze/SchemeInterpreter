@@ -8,7 +8,7 @@ import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
 
-public class EqExpression extends CompoundExpression {
+public class EqExpression extends BaseExpression {
 
     private final Expression left;
     private final Expression right;

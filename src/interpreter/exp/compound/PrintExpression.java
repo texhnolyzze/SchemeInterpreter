@@ -8,7 +8,7 @@ import interpreter.exp.self.NilExpression;
 import java.io.PrintStream;
 import java.util.List;
 
-public class PrintExpression extends CompoundExpression {
+public class PrintExpression extends BaseExpression {
 
     private final PrintStream out;
     private final Expression arg;

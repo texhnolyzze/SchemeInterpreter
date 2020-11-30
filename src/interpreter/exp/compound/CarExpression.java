@@ -7,7 +7,7 @@ import interpreter.exp.self.PairExpression;
 
 import java.util.List;
 
-public class CarExpression extends CompoundExpression {
+public class CarExpression extends BaseExpression {
 
     private final Expression arg;
 

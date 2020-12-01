@@ -27,7 +27,7 @@ public class ApplyExpression extends BaseExpression {
         IN_TRAMPOLINE.set(false);
         try {
             Procedure proc = lookupProc(env);
-            Environment extended = extendProcEnvironment(proc, env, false);
+            Environment extended = extendProcEnvironment(proc, env);
             return proc.eval(extended);
         } finally {
             IN_TRAMPOLINE.set(prevState);
@@ -35,9 +35,8 @@ public class ApplyExpression extends BaseExpression {
     }
 
     void storeProcedureToCall(TrampolineCtx ctx) {
-        Procedure proc = lookupProc(ctx.environment);
-        ctx.proc = proc;
-        ctx.environment = extendProcEnvironment(proc, ctx.environment, true);
+        ctx.proc = lookupProc(ctx.environment);
+        ctx.environment = extendProcEnvironment(ctx.proc, ctx.environment);
     }
 
     private Procedure lookupProc(Environment env) {
@@ -47,26 +46,19 @@ public class ApplyExpression extends BaseExpression {
         return (Procedure) exp;
     }
 
-    private Environment extendProcEnvironment(Procedure proc, Environment env, boolean overwrite) {
+    private Environment extendProcEnvironment(Procedure proc, Environment env) {
         List<String> params = proc.params();
         assertNumArgs(0, args, params.size());
         Iterator<String> iter1 = params.iterator();
         Iterator<Expression> iter2 = args.iterator();
         Environment procEnvironment = proc.env();
-        Map<String, Expression> boundArgs = overwrite ? null : new HashMap<>(params.size());
+        Map<String, Expression> boundArgs = new HashMap<>(params.size());
         while (iter1.hasNext()) {
             String param = iter1.next();
             Expression arg = iter2.next().eval(env);
-            if (overwrite)
-                env.define(param, arg);
-            else
-                boundArgs.put(param, arg);
+            boundArgs.put(param, arg);
         }
-        if (overwrite) {
-            env.retailAll(params);
-            return env;
-        } else
-            return procEnvironment.extend(boundArgs);
+        return procEnvironment.extend(boundArgs);
     }
 
 }

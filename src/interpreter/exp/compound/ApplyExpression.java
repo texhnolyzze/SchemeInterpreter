@@ -49,13 +49,11 @@ public class ApplyExpression extends BaseExpression {
     private Environment extendProcEnvironment(Procedure proc, Environment env) {
         List<String> params = proc.params();
         assertNumArgs(0, args, params.size());
-        Iterator<String> iter1 = params.iterator();
-        Iterator<Expression> iter2 = args.iterator();
         Environment procEnvironment = proc.env();
         Map<String, Expression> boundArgs = new HashMap<>(params.size());
-        while (iter1.hasNext()) {
-            String param = iter1.next();
-            Expression arg = iter2.next().eval(env);
+        for (int i = 0; i < params.size(); i++) {
+            String param = params.get(i);
+            Expression arg = args.get(i).eval(env);
             boundArgs.put(param, arg);
         }
         return procEnvironment.extend(boundArgs);

@@ -5,7 +5,6 @@ import interpreter.Environment;
 import interpreter.exp.Expression;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class SequenceExpression extends BaseExpression {
@@ -23,12 +22,12 @@ public class SequenceExpression extends BaseExpression {
 
     @Override
     public Expression eval(Environment env) {
-        for (Iterator<Expression> iterator = seq.iterator();;) {
-            Expression e = iterator.next();
-            if (!iterator.hasNext()) {
-                return trampoline(e, env);
-            } else
+        for (int i = 0;;) {
+            Expression e = seq.get(i++);
+            if (i < seq.size()) {
                 e.eval(env);
+            } else
+                return trampoline(e, env);
         }
     }
 

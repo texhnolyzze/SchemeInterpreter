@@ -7,7 +7,6 @@ import interpreter.exp.self.NilExpression;
 import interpreter.exp.self.PairExpression;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ListExpression extends BaseExpression {
@@ -26,14 +25,13 @@ public class ListExpression extends BaseExpression {
     public Expression eval(Environment env) {
         if (list.isEmpty())
             return NilExpression.INSTANCE;
-        Iterator<Expression> iterator = list.iterator();
         PairExpression head = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
         PairExpression curr = head;
-        while (true) {
-            Expression next = iterator.next();
+        for (int i = 0;;) {
+            Expression next = list.get(i++);
             Expression eval = next.eval(env);
             curr.setCar(eval);
-            if (iterator.hasNext()) {
+            if (i < list.size()) {
                 PairExpression cdr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
                 curr.setCdr(cdr);
                 curr = cdr;

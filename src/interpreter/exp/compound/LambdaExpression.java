@@ -12,13 +12,14 @@ public class LambdaExpression extends BaseExpression {
     private final List<String> params;
     private final SequenceExpression body;
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes", "unchecked", "ForLoopReplaceableByForEach"})
     public LambdaExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
         assertList(list.get(1));
         List params = (List) list.get(1);
-        for (Object param : params) {
+        for (int i = 0; i < params.size(); i++) {
+            Object param = params.get(i);
             assertSymbol(param);
         }
         this.params = params;

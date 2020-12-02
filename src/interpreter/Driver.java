@@ -66,7 +66,7 @@ public class Driver {
             inOut.out().println("We're done too");
             inOut.out().println("Run time " + total + " ms");
         } catch (IllegalArgumentException e) {
-            inOut.out().println("Error during evaluation: " + e.getMessage());
+            inOut.err().println("Error during evaluation: " + e.getMessage());
         }
         next.setLength(0);
     }

@@ -21,7 +21,7 @@ public class EvalExpression extends BaseExpression {
     @Override
     public Expression eval(Environment env) {
         Expression eval = expression.eval(env);
-        return analyzer.analyze(QuoteExpression.unquote(eval)).eval(env);
+        return trampoline(analyzer.analyze(QuoteExpression.unquote(eval)), env);
     }
     
 }

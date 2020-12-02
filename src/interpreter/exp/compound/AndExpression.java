@@ -23,8 +23,10 @@ public class AndExpression extends BaseExpression {
     }
 
     @Override
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     public Expression eval(Environment env) {
-        for (Expression e : args) {
+        for (int i = 0; i < args.size(); i++) {
+            Expression e = args.get(i);
             Expression eval = e.eval(env);
             if (eval == FalseExpression.INSTANCE)
                 return FalseExpression.INSTANCE;

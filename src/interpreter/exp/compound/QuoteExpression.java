@@ -26,29 +26,30 @@ public class QuoteExpression extends BaseExpression {
     }
 
     private Expression quote(Object o, Analyzer analyzer) {
-        if (o instanceof List) {
-            if (((List<?>) o).isEmpty())
+        if (o instanceof List<?> list) {
+            if (list.isEmpty())
                 return  NilExpression.INSTANCE;
             else {
                 PairExpression curr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
                 PairExpression head = curr;
-                for (Iterator<?> iterator = ((List<?>) o).iterator(); iterator.hasNext(); ) {
-                    Object quoted = iterator.next();
-                    SelfEvaluatingExpression exp = analyzer.analyzeSelfEvaluatingExpression(quoted);
+                for (int i = 0;;) {
+                    Object next = list.get(i++);
+                    SelfEvaluatingExpression exp = analyzer.analyzeSelfEvaluatingExpression(next);
                     if (exp != null)
                         curr.setCar(exp);
                     else {
-                        if (quoted instanceof List)
-                            curr.setCar(quote(quoted, analyzer));
-                        else {
-                            curr.setCar(new SymbolExpression((String) quoted));
+                        if (next instanceof List) {
+                            curr.setCar(quote(next, analyzer));
+                        } else {
+                            curr.setCar(new SymbolExpression((String) next));
                         }
                     }
-                    if (iterator.hasNext()) {
-                        PairExpression next = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
-                        curr.setCdr(next);
-                        curr = next;
-                    }
+                    if (i < list.size()) {
+                        PairExpression pair = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
+                        curr.setCdr(pair);
+                        curr = pair;
+                    } else
+                        break;
                 }
                 return head;
             }
@@ -64,7 +65,7 @@ public class QuoteExpression extends BaseExpression {
         if (exp instanceof PairExpression) {
             PairExpression pair = (PairExpression) exp;
             Expression curr;
-            List<Object> res = new ArrayList<>();
+            List<Object> res = new ArrayList<>(8);
             do {
                 res.add(unquote(pair.car()));
                 curr = pair.cdr();

@@ -22,9 +22,11 @@ public abstract class NumberCombineExpression extends BaseExpression {
     }
 
     @Override
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     public final Expression eval(Environment env) {
         NumberExpression res = null;
-        for (Expression e : args) {
+        for (int i = 0; i < args.size(); i++) {
+            Expression e = args.get(i);
             Expression eval = e.eval(env);
             assertNotNull(eval);
             assertType(eval, NumberExpression.class);

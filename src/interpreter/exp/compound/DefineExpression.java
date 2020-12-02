@@ -13,17 +13,19 @@ public class DefineExpression extends BaseExpression {
     private final String var;
     private final Expression definition;
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     public DefineExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
-        if (list.get(1) instanceof List) { // procedure definition
-            List<?> l = (List<?>) list.get(1);
-            assertAtLeastNumArgs(0, l, 1);
-            assertNotPredefined(l.get(0), analyzer);
-            for (Object o : l)
-                assertSymbol(o);
-            this.var = (String) l.get(0);
-            List<?> params = l.subList(1, l.size());
+        if (list.get(1) instanceof List<?> procedure) { // procedure definition
+            assertAtLeastNumArgs(0, procedure, 1);
+            assertNotPredefined(procedure.get(0), analyzer);
+            for (int i = 0; i < procedure.size(); i++) {
+                Object param = procedure.get(i);
+                assertSymbol(param);
+            }
+            this.var = (String) procedure.get(0);
+            List<?> params = procedure.subList(1, procedure.size());
             List<?> body = list.subList(2, list.size());
             ArrayList<?> lambda = new ArrayList<>(List.of("lambda", params));
             append(lambda, body);

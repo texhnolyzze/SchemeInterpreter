@@ -14,7 +14,7 @@ public abstract class BaseExpression implements Expression {
 
     private final List<?> src;
 
-    public BaseExpression(List<?> list, Analyzer analyzer) {
+    protected BaseExpression(List<?> list, Analyzer analyzer) {
         this.src = list;
     }
 

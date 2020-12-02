@@ -22,10 +22,10 @@ public class QuoteExpression extends BaseExpression {
     public QuoteExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 1);
-        this.arg = INTERNED.computeIfAbsent(list.get(1), o -> nest(list.get(1), analyzer));
+        this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1), analyzer));
     }
 
-    private Expression nest(Object o, Analyzer analyzer) {
+    private Expression quote(Object o, Analyzer analyzer) {
         if (o instanceof List) {
             if (((List<?>) o).isEmpty())
                 return  NilExpression.INSTANCE;
@@ -39,7 +39,7 @@ public class QuoteExpression extends BaseExpression {
                         curr.setCar(exp);
                     else {
                         if (quoted instanceof List)
-                            curr.setCar(nest(quoted, analyzer));
+                            curr.setCar(quote(quoted, analyzer));
                         else {
                             curr.setCar(new SymbolExpression((String) quoted));
                         }
@@ -57,6 +57,24 @@ public class QuoteExpression extends BaseExpression {
                     analyzer.analyzeSelfEvaluatingExpression(o),
                     () -> new SymbolExpression((String) o)
             );
+        }
+    }
+
+    public static Object unquote(Expression exp) {
+        if (exp instanceof PairExpression) {
+            PairExpression pair = (PairExpression) exp;
+            Expression curr;
+            List<Object> res = new ArrayList<>();
+            do {
+                res.add(unquote(pair.car()));
+                curr = pair.cdr();
+                if (curr == NilExpression.INSTANCE)
+                    break;
+                pair = (PairExpression) curr;
+            } while (true);
+            return res;
+        } else {
+            return exp.toString();
         }
     }
 

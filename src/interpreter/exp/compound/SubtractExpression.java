@@ -5,9 +5,9 @@ import interpreter.exp.self.NumberExpression;
 
 import java.util.List;
 
-public class MinusExpression extends NumberCombineExpression {
+public class SubtractExpression extends NumberCombineCopyingExpression {
 
-    public MinusExpression(List<?> list, Analyzer analyzer) {
+    public SubtractExpression(List<?> list, Analyzer analyzer) {
         super(negateSingleArgument(list), analyzer);
     }
 

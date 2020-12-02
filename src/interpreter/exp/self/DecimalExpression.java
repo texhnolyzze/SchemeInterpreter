@@ -53,13 +53,21 @@ public class DecimalExpression extends NumberExpression {
 
     @Override
     public NumberExpression mod(NumberExpression right) {
-        this.value %= right.doubleValue();
+        try {
+            this.value %= right.doubleValue();
+        } catch (ArithmeticException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
         return this;
     }
 
     @Override
     public NumberExpression div(NumberExpression right) {
-        this.value /= right.doubleValue();
+        try {
+            this.value /= right.doubleValue();
+        } catch (ArithmeticException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
         return this;
     }
 

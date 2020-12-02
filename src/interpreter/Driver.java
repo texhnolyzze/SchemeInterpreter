@@ -51,13 +51,20 @@ public class Driver {
 
     private void process(StringBuilder next) {
         try {
+            long total = 0L;
+            long start = System.currentTimeMillis();
             List<Object> read = reader.read(next.toString());
+            total += System.currentTimeMillis() - start;
             inOut.out().println(read);
+            start = System.currentTimeMillis();
             for (Iterator<Object> iterator = read.iterator(); iterator.hasNext(); ) {
                 Object exp = iterator.next();
                 eval(exp, !iterator.hasNext());
             }
+            long end = System.currentTimeMillis();
+            total += (end - start);
             inOut.out().println("We're done too");
+            inOut.out().println("Run time " + total + " ms");
         } catch (IllegalArgumentException e) {
             inOut.out().println("Error during evaluation: " + e.getMessage());
         }
@@ -86,23 +93,28 @@ public class Driver {
         predefined.put("=", NumberEqExpression.class);
         predefined.put("!=", NumberNotEqExpression.class);
         predefined.put("not", NotExpression.class);
-        predefined.put("+", PlusExpression.class);
-        predefined.put("-", MinusExpression.class);
+        predefined.put("+", AddExpression.class);
+        predefined.put("-", SubtractExpression.class);
         predefined.put("null?", IsNilExpression.class);
         predefined.put("eq?", EqExpression.class);
         predefined.put("define", DefineExpression.class);
         predefined.put("set!", SetExpression.class);
         predefined.put("lambda", LambdaExpression.class);
         predefined.put("begin", BeginExpression.class);
-        predefined.put("*", MulExpression.class);
+        predefined.put("*", MultiplyExpression.class);
         predefined.put("list", ListExpression.class);
         predefined.put("%", ModExpression.class);
-        predefined.put("/", DivExpression.class);
+        predefined.put("/", DivideExpression.class);
         predefined.put("while", WhileExpression.class);
         predefined.put("quote", QuoteExpression.class);
         predefined.put("eval", EvalExpression.class);
         predefined.put("set-car!", SetCarExpression.class);
         predefined.put("set-cdr!", SetCdrExpression.class);
+        predefined.put("+=", AddAndSetExpression.class);
+        predefined.put("-=", SubtractAndSetExpression.class);
+        predefined.put("*=", MultiplyAndSetExpression.class);
+        predefined.put("/=", DivideAndSetExpression.class);
+        predefined.put("%=", ModAndSetExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

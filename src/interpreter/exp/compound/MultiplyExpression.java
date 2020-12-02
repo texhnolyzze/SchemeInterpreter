@@ -5,9 +5,9 @@ import interpreter.exp.self.NumberExpression;
 
 import java.util.List;
 
-public class MulExpression extends NumberCombineExpression {
+public class MultiplyExpression extends NumberCombineCopyingExpression {
 
-    public MulExpression(List<?> list, Analyzer analyzer) {
+    public MultiplyExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 

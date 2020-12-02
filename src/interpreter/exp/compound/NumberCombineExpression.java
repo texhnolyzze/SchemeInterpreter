@@ -12,7 +12,7 @@ public abstract class NumberCombineExpression extends BaseExpression {
 
     private final List<Expression> args;
 
-    public NumberCombineExpression(List<?> list, Analyzer analyzer) {
+    protected NumberCombineExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 2);
         this.args = new ArrayList<>(2);
@@ -28,11 +28,17 @@ public abstract class NumberCombineExpression extends BaseExpression {
             Expression eval = e.eval(env);
             assertNotNull(eval);
             assertType(eval, NumberExpression.class);
-            res = res == null ? ((NumberExpression) eval).copy() : combine(res, (NumberExpression) eval);
+            if (res == null) {
+                NumberExpression number = (NumberExpression) eval;
+                res = mustCopy() ? number.copy() : number;
+            } else {
+                res = combine(res, ((NumberExpression) eval));
+            }
         }
         return res;
     }
 
     protected abstract NumberExpression combine(NumberExpression left, NumberExpression right);
+    protected abstract boolean mustCopy();
 
 }

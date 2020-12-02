@@ -14,7 +14,7 @@ public abstract class NumberCompareExpression extends BaseExpression {
     private final Expression left;
     private final Expression right;
 
-    public NumberCompareExpression(List<?> list, Analyzer analyzer) {
+    protected NumberCompareExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 2);
         this.left = analyzer.analyze(list.get(1));

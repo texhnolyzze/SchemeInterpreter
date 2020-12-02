@@ -63,20 +63,28 @@ public class IntExpression extends NumberExpression {
 
     @Override
     public NumberExpression mod(NumberExpression right) {
-        if (right.getClass() == IntExpression.class) {
-            value %= right.longValue();
-            return this;
+        try {
+            if (right.getClass() == IntExpression.class) {
+                value %= right.longValue();
+                return this;
+            }
+            return new DecimalExpression(this.doubleValue() % right.doubleValue());
+        } catch (ArithmeticException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
-        return new DecimalExpression(this.doubleValue() % right.doubleValue());
     }
 
     @Override
     public NumberExpression div(NumberExpression right) {
-        if (right.getClass() == IntExpression.class) {
-            value /= right.longValue();
-            return this;
+        try {
+            if (right.getClass() == IntExpression.class) {
+                value /= right.longValue();
+                return this;
+            }
+            return new DecimalExpression(this.doubleValue() / right.doubleValue());
+        } catch (ArithmeticException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
-        return new DecimalExpression(this.doubleValue() / right.doubleValue());
     }
 
 }

@@ -5,9 +5,9 @@ import interpreter.exp.self.NumberExpression;
 
 import java.util.List;
 
-public class ModExpression extends NumberCombineCopyingExpression {
+public class ModAndSetExpression extends NumberCombineModifyingExpression {
 
-    public ModExpression(List<?> list, Analyzer analyzer) {
+    public ModAndSetExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
     }
 

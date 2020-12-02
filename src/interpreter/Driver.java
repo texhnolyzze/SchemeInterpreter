@@ -99,6 +99,7 @@ public class Driver {
         predefined.put("%", ModExpression.class);
         predefined.put("/", DivExpression.class);
         predefined.put("while", WhileExpression.class);
+        predefined.put("quote", QuoteExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

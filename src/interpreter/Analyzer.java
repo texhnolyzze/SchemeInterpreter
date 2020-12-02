@@ -33,8 +33,7 @@ public class Analyzer {
         return inOut;
     }
 
-    @SuppressWarnings("unchecked")
-    public Expression analyze(Object exp) {
+    public SelfEvaluatingExpression analyzeSelfEvaluatingExpression(Object exp) {
         if (exp.getClass() == String.class) {
             String s = (String) exp;
             if (s.startsWith("\""))
@@ -49,8 +48,17 @@ public class Analyzer {
                 return TrueExpression.INSTANCE;
             else if (FalseExpression.INSTANCE.toString().equals(s))
                 return FalseExpression.INSTANCE;
-            else
-                return new VariableExpression(s);
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Expression analyze(Object exp) {
+        SelfEvaluatingExpression expression = analyzeSelfEvaluatingExpression(exp);
+        if (expression != null)
+            return expression;
+        if (exp instanceof String) {
+            return new VariableExpression((String) exp);
         } else { // list
             List<Object> list = (List<Object>) exp;
             if (list.isEmpty())

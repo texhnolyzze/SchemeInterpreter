@@ -13,14 +13,14 @@ public class LispReader {
         List<Object> result = new ArrayList<>(1);
         int from = 0;
         do {
-            Object[] next = read(exp, from);
+            Object[] next = read(exp, from, 0);
             result.add(next[0]);
             from = (int) next[1];
         } while (from < exp.length());
         return result;
     }
 
-    private Object[] read(String exp, int from) {
+    private Object[] read(String exp, int from, int depth) {
         StringBuilder next = new StringBuilder();
         Object[] result = null;
         LinkedList<Character> parenthesis = new LinkedList<>();
@@ -36,6 +36,8 @@ public class LispReader {
                     i = backslash(exp, next, i);
                 } else if (c == '"') {
                     if (stack.isEmpty()) {
+                        readingString = false;
+                        next.append('"');
                         result = cons(next.toString(), i + 1);
                         break;
                     }
@@ -44,7 +46,21 @@ public class LispReader {
                     next.append(c);
             } else {
                 throwOn(c == '\\', "Unexpected backslash", i);
-                if (c == '(') {
+                if (c == '`') {
+                    if (stack.isEmpty()) {
+                        if (readingSymbol) {
+                            result = cons(next.toString(), i);
+                        } else {
+                            Object[] read = read(exp, i + 1, depth + 1);
+                            result = cons(List.of("quote", read[0]), (int) read[1]);
+                        }
+                        break;
+                    } else {
+                        Object[] read = read(exp, i + 1, depth + 1);
+                        stack.peek().add(List.of("quote", read[0]));
+                        i = (int) read[1] - 1;
+                    }
+                } else if (c == '(') {
                     if (stack.isEmpty() && readingSymbol) {
                         result = cons(next.toString(), i);
                         break;
@@ -57,6 +73,11 @@ public class LispReader {
                     }
                     stack.push(list);
                 } else if (c == ')') {
+                    if (stack.isEmpty() && depth != 0) {
+                        if (readingSymbol)
+                            result = cons(next.toString(), i);
+                        break;
+                    }
                     throwOn(parenthesis.isEmpty(), "Missing open parenthesis", i);
                     throwOn(parenthesis.peek() != '(', "Unopened ')'", i);
                     readingSymbol = finalizeSymbol(stack, next, readingSymbol);
@@ -119,23 +140,12 @@ public class LispReader {
     private int backslash(String exp, StringBuilder next, int i) {
         throwOn(i + 1 >= exp.length(), "Unexpected backslash", i);
         switch (exp.charAt(i + 1)) {
-            case '\\':
-                next.append('\\');
-                break;
-            case '"':
-                next.append('"');
-                break;
-            case 'n':
-                next.append('\n');
-                break;
-            case 't':
-                next.append('\t');
-                break;
-            case 'r':
-                next.append('\r');
-                break;
-            default:
-                throwOn(true, "Unexpected escaped character", i);
+            case '\\' -> next.append('\\');
+            case '"' -> next.append('"');
+            case 'n' -> next.append('\n');
+            case 't' -> next.append('\t');
+            case 'r' -> next.append('\r');
+            default -> throwOn(true, "Unexpected escaped character", i);
         }
         return ++i;
     }

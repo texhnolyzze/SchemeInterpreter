@@ -52,11 +52,13 @@ public class LispReader {
                             result = cons(next.toString(), i);
                         } else {
                             Object[] read = read(exp, i + 1, depth + 1);
+                            throwOn(read == null, "Empty quotation", i);
                             result = cons(List.of("quote", read[0]), (int) read[1]);
                         }
                         break;
                     } else {
                         Object[] read = read(exp, i + 1, depth + 1);
+                        throwOn(read == null, "Empty quotation", i);
                         stack.peek().add(List.of("quote", read[0]));
                         i = (int) read[1] - 1;
                     }

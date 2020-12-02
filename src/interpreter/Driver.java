@@ -101,6 +101,8 @@ public class Driver {
         predefined.put("while", WhileExpression.class);
         predefined.put("quote", QuoteExpression.class);
         predefined.put("eval", EvalExpression.class);
+        predefined.put("set-car!", SetCarExpression.class);
+        predefined.put("set-cdr!", SetCdrExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

@@ -20,14 +20,12 @@ public class PairExpression extends SelfEvaluatingExpression {
         return cdr;
     }
 
-    public PairExpression setCar(Expression car) {
+    public void setCar(Expression car) {
         this.car = car;
-        return this;
     }
 
-    public PairExpression setCdr(Expression cdr) {
+    public void setCdr(Expression cdr) {
         this.cdr = cdr;
-        return this;
     }
 
     public static PairExpression cons(Expression car, Expression cdr) {

@@ -21,45 +21,43 @@ public class QuoteExpression extends BaseExpression {
 
     public QuoteExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
-        this.arg = analyze(list, analyzer);
+        assertNumArgs(list, 1);
+        this.arg = INTERNED.computeIfAbsent(list.get(1), o -> nest(list.get(1), analyzer));
     }
 
-    private Expression analyze(List<?> list, Analyzer analyzer) {
-        assertNumArgs(list, 1);
-        return INTERNED.computeIfAbsent(list.get(1), o -> {
-            if (o instanceof List) {
-                if (((List<?>) o).isEmpty())
-                    return  NilExpression.INSTANCE;
-                else {
-                    PairExpression curr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
-                    PairExpression head = curr;
-                    for (Iterator<?> iterator = ((List<?>) o).iterator(); iterator.hasNext(); ) {
-                        Object quoted = iterator.next();
-                        SelfEvaluatingExpression exp = analyzer.analyzeSelfEvaluatingExpression(quoted);
-                        if (exp != null)
-                            curr.setCar(exp);
+    private Expression nest(Object o, Analyzer analyzer) {
+        if (o instanceof List) {
+            if (((List<?>) o).isEmpty())
+                return  NilExpression.INSTANCE;
+            else {
+                PairExpression curr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
+                PairExpression head = curr;
+                for (Iterator<?> iterator = ((List<?>) o).iterator(); iterator.hasNext(); ) {
+                    Object quoted = iterator.next();
+                    SelfEvaluatingExpression exp = analyzer.analyzeSelfEvaluatingExpression(quoted);
+                    if (exp != null)
+                        curr.setCar(exp);
+                    else {
+                        if (quoted instanceof List)
+                            curr.setCar(nest(quoted, analyzer));
                         else {
-                            if (quoted instanceof List)
-                                curr.setCar(analyze((List<?>) quoted, analyzer));
-                            else {
-                                curr.setCar(new SymbolExpression((String) quoted));
-                            }
-                        }
-                        if (iterator.hasNext()) {
-                            PairExpression next = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
-                            curr.setCdr(next);
-                            curr = next;
+                            curr.setCar(new SymbolExpression((String) quoted));
                         }
                     }
-                    return head;
+                    if (iterator.hasNext()) {
+                        PairExpression next = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
+                        curr.setCdr(next);
+                        curr = next;
+                    }
                 }
-            } else {
-                return Objects.requireNonNullElseGet(
-                        analyzer.analyzeSelfEvaluatingExpression(o),
-                        () -> new SymbolExpression((String) o)
-                );
+                return head;
             }
-        });
+        } else {
+            return Objects.requireNonNullElseGet(
+                    analyzer.analyzeSelfEvaluatingExpression(o),
+                    () -> new SymbolExpression((String) o)
+            );
+        }
     }
 
     @Override

@@ -115,6 +115,7 @@ public class Driver {
         predefined.put("*=", MultiplyAndSetExpression.class);
         predefined.put("/=", DivideAndSetExpression.class);
         predefined.put("%=", ModAndSetExpression.class);
+        predefined.put("cond", CondExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

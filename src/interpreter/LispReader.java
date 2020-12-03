@@ -46,7 +46,7 @@ public class LispReader {
                     next.append(c);
             } else {
                 throwOn(c == '\\', "Unexpected backslash", i);
-                if (c == '`') {
+                if (c == '`' || c == '\'') {
                     if (stack.isEmpty()) {
                         if (readingSymbol) {
                             result = cons(next.toString(), i);

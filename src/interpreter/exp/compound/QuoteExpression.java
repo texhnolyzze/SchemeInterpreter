@@ -5,10 +5,12 @@ import interpreter.Environment;
 import interpreter.exp.Expression;
 import interpreter.exp.self.NilExpression;
 import interpreter.exp.self.PairExpression;
-import interpreter.exp.self.SelfEvaluatingExpression;
 import interpreter.exp.self.SymbolExpression;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class QuoteExpression extends BaseExpression {
 
@@ -22,10 +24,10 @@ public class QuoteExpression extends BaseExpression {
     public QuoteExpression(List<?> list, Analyzer analyzer) {
         super(list, analyzer);
         assertNumArgs(list, 1);
-        this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1), analyzer));
+        this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
     }
 
-    private Expression quote(Object o, Analyzer analyzer) {
+    private Expression quote(Object o) {
         if (o instanceof List<?> list) {
             if (list.isEmpty())
                 return  NilExpression.INSTANCE;
@@ -34,16 +36,7 @@ public class QuoteExpression extends BaseExpression {
                 PairExpression head = curr;
                 for (int i = 0;;) {
                     Object next = list.get(i++);
-                    SelfEvaluatingExpression exp = analyzer.analyzeSelfEvaluatingExpression(next);
-                    if (exp != null)
-                        curr.setCar(exp);
-                    else {
-                        if (next instanceof List) {
-                            curr.setCar(quote(next, analyzer));
-                        } else {
-                            curr.setCar(new SymbolExpression((String) next));
-                        }
-                    }
+                    curr.setCar(quote(next));
                     if (i < list.size()) {
                         PairExpression pair = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
                         curr.setCdr(pair);
@@ -54,10 +47,7 @@ public class QuoteExpression extends BaseExpression {
                 return head;
             }
         } else {
-            return Objects.requireNonNullElseGet(
-                    analyzer.analyzeSelfEvaluatingExpression(o),
-                    () -> new SymbolExpression((String) o)
-            );
+            return new SymbolExpression((String) o);
         }
     }
 

@@ -4,6 +4,7 @@ import interpreter.exp.Expression;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Environment {
 
@@ -42,6 +43,10 @@ public class Environment {
 
     public Environment extend(Map<String, Expression> bindings) {
         return new Environment(this, bindings);
+    }
+
+    public Set<Map.Entry<String, Expression>> entries() {
+        return bindings.entrySet();
     }
 
 }

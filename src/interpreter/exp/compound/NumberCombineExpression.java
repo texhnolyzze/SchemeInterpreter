@@ -24,6 +24,7 @@ public abstract class NumberCombineExpression extends BaseExpression {
     @Override
     @SuppressWarnings("ForLoopReplaceableByForEach")
     public final Expression eval(Environment env) {
+        NumberExpression prev = null;
         NumberExpression res = null;
         for (int i = 0; i < args.size(); i++) {
             Expression e = args.get(i);
@@ -35,12 +36,17 @@ public abstract class NumberCombineExpression extends BaseExpression {
                 res = mustCopy() ? number.copy() : number;
             } else {
                 res = combine(res, ((NumberExpression) eval));
+                if (prev != res) {
+                    onTypeChanged(env, prev, res);
+                }
             }
+            prev = res;
         }
         return res;
     }
 
     protected abstract NumberExpression combine(NumberExpression left, NumberExpression right);
     protected abstract boolean mustCopy();
+    protected abstract void onTypeChanged(Environment env, NumberExpression prev, NumberExpression newType);
 
 }

@@ -8,11 +8,11 @@ import java.util.Set;
 
 public class Environment {
 
-    private final Environment root;
+    private final Environment parent;
     private final Map<String, Expression> bindings;
 
-    private Environment(Environment root, Map<String, Expression> bindings) {
-        this.root = root;
+    private Environment(Environment parent, Map<String, Expression> bindings) {
+        this.parent = parent;
         this.bindings = new HashMap<>(bindings);
     }
 
@@ -21,9 +21,13 @@ public class Environment {
     }
 
     public void set(String key, Expression val) {
-        if (!bindings.containsKey(key))
-            throw new IllegalArgumentException("Variable " + key + " is undefined");
-        bindings.put(key, val);
+        Environment env = this;
+        do {
+            if (bindings.computeIfPresent(key, (k, v) -> val) == val)
+                return;
+            env = env.parent;
+        } while (env != null);
+        throw new IllegalArgumentException("Variable " + key + " is undefined");
     }
 
     public Expression lookup(String key) {
@@ -32,7 +36,7 @@ public class Environment {
             Expression res = env.bindings.get(key);
             if (res != null)
                 return res;
-            env = env.root;
+            env = env.parent;
         } while (env != null);
         throw new IllegalArgumentException("Variable " + key + " is undefined");
     }

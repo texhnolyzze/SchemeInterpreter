@@ -67,7 +67,7 @@ public class Analyzer {
     private Expression analyzeList(List<Object> exp) {
         if (exp.isEmpty())
             throw new IllegalArgumentException("Empty expression");
-        String type = (String) exp.get(0);
+        Object type = exp.get(0);
         Class<? extends Expression> c = predefined.get(type);
         if (c != null) {
             Constructor<? extends Expression> constructor = constructors.computeIfAbsent(c, clazz -> {

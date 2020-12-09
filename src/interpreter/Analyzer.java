@@ -63,9 +63,7 @@ public class Analyzer {
             List<Object> list = (List<Object>) exp;
             if (list.isEmpty())
                 throw new IllegalArgumentException("Empty expression");
-            if (list.get(0).getClass() != String.class)
-                throw new IllegalArgumentException("Procedure call must be named");
-            String type = (String) list.get(0);
+            Object type = list.get(0);
             Class<? extends Expression> c = predefined.get(type);
             if (c != null) {
                 Constructor<? extends Expression> constructor = constructors.computeIfAbsent(c, clazz -> {

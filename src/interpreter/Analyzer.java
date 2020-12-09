@@ -33,7 +33,17 @@ public class Analyzer {
         return inOut;
     }
 
-    public SelfEvaluatingExpression analyzeSelfEvaluatingExpression(Object exp) {
+    @SuppressWarnings("unchecked")
+    public Expression analyze(Object exp) {
+        Expression expression = analyzeString(exp);
+        if (expression != null) {
+            return expression;
+        } else { // list
+            return analyzeList((List<Object>) exp);
+        }
+    }
+
+    private Expression analyzeString(Object exp) {
         if (exp.getClass() == String.class) {
             String s = (String) exp;
             if (s.startsWith("\""))
@@ -48,39 +58,32 @@ public class Analyzer {
                 return TrueExpression.INSTANCE;
             else if (FalseExpression.INSTANCE.toString().equals(s))
                 return FalseExpression.INSTANCE;
+            else
+                return new VariableExpression(s);
         }
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    public Expression analyze(Object exp) {
-        SelfEvaluatingExpression expression = analyzeSelfEvaluatingExpression(exp);
-        if (expression != null)
-            return expression;
-        if (exp instanceof String) {
-            return new VariableExpression((String) exp);
-        } else { // list
-            List<Object> list = (List<Object>) exp;
-            if (list.isEmpty())
-                throw new IllegalArgumentException("Empty expression");
-            Object type = list.get(0);
-            Class<? extends Expression> c = predefined.get(type);
-            if (c != null) {
-                Constructor<? extends Expression> constructor = constructors.computeIfAbsent(c, clazz -> {
-                    try {
-                        return clazz.getDeclaredConstructor(List.class, Analyzer.class);
-                    } catch (NoSuchMethodException e) {
-                        return fail((IllegalArgumentException) e.getCause());
-                    }
-                });
+    private Expression analyzeList(List<Object> exp) {
+        if (exp.isEmpty())
+            throw new IllegalArgumentException("Empty expression");
+        String type = (String) exp.get(0);
+        Class<? extends Expression> c = predefined.get(type);
+        if (c != null) {
+            Constructor<? extends Expression> constructor = constructors.computeIfAbsent(c, clazz -> {
                 try {
-                    return constructor.newInstance(list, this);
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    return clazz.getDeclaredConstructor(List.class, Analyzer.class);
+                } catch (NoSuchMethodException e) {
                     return fail((IllegalArgumentException) e.getCause());
                 }
-            } else {
-                return new ApplyExpression(list, this);
+            });
+            try {
+                return constructor.newInstance(exp, this);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                return fail((IllegalArgumentException) e.getCause());
             }
+        } else {
+            return new ApplyExpression(exp, this);
         }
     }
 

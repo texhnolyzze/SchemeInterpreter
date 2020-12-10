@@ -14,7 +14,8 @@ public class LispReader {
         int from = 0;
         do {
             Object[] next = read(exp, from, 0);
-            result.add(next[0]);
+            if (next[0] != null)
+                result.add(next[0]);
             from = (int) next[1];
         } while (from < exp.length());
         return result;
@@ -105,6 +106,10 @@ public class LispReader {
                     readingString = true;
                     stringStart = i;
                     next.append(c);
+                } else if (c == ';') {
+                    do {
+                        i++;
+                    } while (i < exp.length() && exp.charAt(i) != '\n');
                 } else {
                     readingSymbol = true;
                     next.append(c);
@@ -114,8 +119,12 @@ public class LispReader {
         }
         throwOn(readingString, "Unclosed string literal starting", stringStart);
         throwOn(!stack.isEmpty(), "Unexpected EOF");
-        if (result == null && readingSymbol)
-            result = cons(next.toString(), exp.length());
+        if (result == null) {
+            if (readingSymbol)
+                result = cons(next.toString(), exp.length());
+            else
+                result = cons(null, i);
+        }
         return result;
     }
 

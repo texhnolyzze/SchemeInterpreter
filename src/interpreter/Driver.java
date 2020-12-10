@@ -45,7 +45,7 @@ public class Driver {
             } else if (s.equals("exit")) {
                 System.exit(0);
             } else
-                next.append(s);
+                next.append(s).append('\n');
         }
     }
 

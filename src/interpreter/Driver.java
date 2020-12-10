@@ -116,6 +116,8 @@ public class Driver {
         predefined.put("/=", DivideAndSetExpression.class);
         predefined.put("%=", ModAndSetExpression.class);
         predefined.put("cond", CondExpression.class);
+        predefined.put("delay", DelayExpression.class);
+        predefined.put("force", ForceExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

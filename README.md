@@ -36,6 +36,21 @@ So this operators take the leftmost operand and modify it's value
 
 7) Tail recursion implemented via `trampoline`. You can see it's implementation in 
    `BaseExpression#trampoline(Expression, Environment)`
+   
+8) force/delay expressions which are just a syntactic sugar:
+```
+(define x (delay (1) (2) (3))) 
+   is just 
+(define x (lambda () (1) (2) (3)))
+```
+
+```
+(force x) 
+   is just 
+(x)
+```
+
+Although `force` is longer -- using it is more convenient.
 
 If you're interested -- you can see some other features in Driver class.
 

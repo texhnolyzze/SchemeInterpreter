@@ -17,7 +17,7 @@ public class CondExpression extends BaseExpression {
         super(list, analyzer);
         assertAtLeastNumArgs(list, 1);
         this.conditions = new ArrayList<>(2);
-        for (int i = 1; i < list.size() - 1; i++) {
+        for (int i = 1; i < list.size(); i++) {
             Object o = list.get(i);
             assertList(o);
             List<?> condition = (List<?>) o;

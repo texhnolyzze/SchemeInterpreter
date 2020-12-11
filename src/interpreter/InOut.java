@@ -5,7 +5,7 @@ import java.io.PrintStream;
 
 public class InOut {
 
-    private final InputStream in;
+    private InputStream in;
     private final PrintStream out;
     private final PrintStream err;
 
@@ -25,6 +25,10 @@ public class InOut {
 
     public PrintStream err() {
         return err;
+    }
+
+    public void setIn(InputStream in) {
+        this.in = in;
     }
 
 }

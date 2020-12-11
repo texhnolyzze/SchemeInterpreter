@@ -3,9 +3,9 @@ package interpreter;
 import interpreter.exp.Expression;
 import interpreter.exp.compound.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,13 +35,20 @@ public class Driver {
             "To use it just write as many Scheme expressions as you want and then type 'done' on the new line.\n" +
             "To exit just type 'exit' on the new line."
         );
-        String s;
+        installLibrary();
         BufferedReader r = new BufferedReader(new InputStreamReader(inOut.in()));
+        loop(r, false, "We're done too", true);
+    }
+
+    private void loop(BufferedReader r, boolean breakOnDone, String messageOnDone, boolean print) throws IOException {
+        String s;
         StringBuilder next = new StringBuilder();
         while (true) {
             s = r.readLine().strip();
             if (s.equals("done")) {
-                process(next);
+                process(next, messageOnDone, print);
+                if (breakOnDone)
+                    break;
             } else if (s.equals("exit")) {
                 System.exit(0);
             } else
@@ -49,21 +56,28 @@ public class Driver {
         }
     }
 
-    private void process(StringBuilder next) {
+    private void installLibrary() throws IOException {
+        InputStream old = inOut.in();
+        BufferedInputStream in = new BufferedInputStream(Files.newInputStream(Path.of(".", "src", "lib", "lib.scm")));
+        inOut.setIn(in);
+        loop(new BufferedReader(new InputStreamReader(in)), true, "\nStandard library installed", false);
+        inOut.setIn(old);
+    }
+
+    private void process(StringBuilder next, String messageOnDone, boolean print) {
         try {
             long total = 0L;
             long start = System.currentTimeMillis();
             List<Object> read = reader.read(next.toString());
             total += System.currentTimeMillis() - start;
-            inOut.out().println(read);
             start = System.currentTimeMillis();
             for (Iterator<Object> iterator = read.iterator(); iterator.hasNext(); ) {
                 Object exp = iterator.next();
-                eval(exp, !iterator.hasNext());
+                eval(exp, !iterator.hasNext(), print);
             }
             long end = System.currentTimeMillis();
             total += (end - start);
-            inOut.out().println("We're done too");
+            inOut.out().println(messageOnDone);
             inOut.out().println("Run time " + total + " ms");
         } catch (IllegalArgumentException e) {
             inOut.err().println("Error during evaluation: " + e.getMessage());
@@ -71,10 +85,10 @@ public class Driver {
         next.setLength(0);
     }
 
-    private void eval(Object obj, final boolean last) {
+    private void eval(Object obj, final boolean last, boolean print) {
         Expression analyze = analyzer.analyze(obj);
         Expression eval = analyze.eval(rootEnvironment);
-        if (last && analyze.getClass() != PrintExpression.class)
+        if (last && analyze.getClass() != PrintExpression.class && print)
             inOut.out().println(eval);
     }
 

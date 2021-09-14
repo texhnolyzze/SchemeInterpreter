@@ -14,7 +14,7 @@ public class ListExpression extends BaseExpression {
     private final List<Expression> list;
 
     public ListExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         this.list = new ArrayList<>(0);
         for (int i = 1; i < list.size(); i++) {
             this.list.add(analyzer.analyze(list.get(i)));
@@ -23,8 +23,9 @@ public class ListExpression extends BaseExpression {
 
     @Override
     public Expression eval(Environment env) {
-        if (list.isEmpty())
+        if (list.isEmpty()) {
             return NilExpression.INSTANCE;
+        }
         PairExpression head = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
         PairExpression curr = head;
         for (int i = 0;;) {
@@ -35,8 +36,9 @@ public class ListExpression extends BaseExpression {
                 PairExpression cdr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
                 curr.setCdr(cdr);
                 curr = cdr;
-            } else
+            } else {
                 break;
+            }
         }
         return head;
     }

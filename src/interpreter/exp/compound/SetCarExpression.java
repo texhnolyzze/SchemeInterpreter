@@ -13,7 +13,7 @@ public class SetCarExpression extends BaseExpression {
     private final Expression value;
 
     public SetCarExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertNumArgs(list, 2);
         this.target = analyzer.analyze(list.get(1));
         this.value = analyzer.analyze(list.get(2));

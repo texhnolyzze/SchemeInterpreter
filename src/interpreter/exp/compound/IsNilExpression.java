@@ -14,7 +14,7 @@ public class IsNilExpression extends BaseExpression {
     private final Expression arg;
 
     public IsNilExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertNumArgs(list, 1);
         this.arg = analyzer.analyze(list.get(1));
     }

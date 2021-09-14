@@ -162,13 +162,15 @@ public class LispReader {
     }
 
     private void throwOn(boolean cond, String msg, int position) {
-        if (cond)
+        if (cond) {
             throw new IllegalArgumentException(msg + " at " + position);
+        }
     }
 
     private void throwOn(boolean cond, String msg) {
-        if (cond)
+        if (cond) {
             throw new IllegalArgumentException(msg);
+        }
     }
 
 }

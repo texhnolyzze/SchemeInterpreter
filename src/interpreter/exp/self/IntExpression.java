@@ -25,8 +25,9 @@ public class IntExpression extends NumberExpression {
 
     @Override
     public long compare(NumberExpression right) {
-        return right.getClass() == IntExpression.class ?    Long.compare(value, right.longValue()) :
-                                                            Double.compare(doubleValue(), right.doubleValue());
+        return right.getClass() == IntExpression.class ?
+               Long.compare(value, right.longValue()) :
+               Double.compare(doubleValue(), right.doubleValue());
     }
 
     @Override

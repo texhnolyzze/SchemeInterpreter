@@ -12,7 +12,7 @@ public class EvalExpression extends BaseExpression {
     private final Analyzer analyzer;
 
     public EvalExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertNumArgs(list, 1);
         this.expression = analyzer.analyze(list.get(1));
         this.analyzer = analyzer;

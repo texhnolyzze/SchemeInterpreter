@@ -56,4 +56,11 @@
 
 (define (divisible? x y) (= (% x y) 0))
 
+(define (append lst tail)
+  (if (null? lst)
+      tail
+      (cons (car lst)
+            (append (cdr lst)
+                    tail))))
+
 done

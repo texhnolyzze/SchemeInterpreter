@@ -14,7 +14,7 @@ public abstract class BaseExpression implements Expression {
 
     private final List<?> src;
 
-    protected BaseExpression(List<?> list, Analyzer analyzer) {
+    protected BaseExpression(List<?> list) {
         this.src = list;
     }
 
@@ -23,13 +23,15 @@ public abstract class BaseExpression implements Expression {
     }
 
     protected void assertNumArgs(int offset, List<?> args, int expected) {
-        if (args.size() - offset != expected)
+        if (args.size() - offset != expected) {
             throw new IllegalArgumentException(getClass().getSimpleName() + ": expected " + expected + " args, got " + (args.size() - offset));
+        }
     }
 
     protected void assertAtLeastNumArgs(int offset, List<?> args, int expected) {
-        if (args.size() - offset < expected)
+        if (args.size() - offset < expected) {
             throw new IllegalArgumentException(getClass().getSimpleName() + ": expected at least " + expected + " args, got " + (args.size() - offset));
+        }
     }
 
     protected void assertAtLeastNumArgs(List<?> args, int expected) {
@@ -37,29 +39,34 @@ public abstract class BaseExpression implements Expression {
     }
 
     protected void assertType(Expression expression, Class<? extends Expression> expected) {
-        if (!expected.isAssignableFrom(expression.getClass()))
+        if (!expected.isAssignableFrom(expression.getClass())) {
             throw new IllegalArgumentException(getClass().getSimpleName() + ": expected arg type is " + expected.getSimpleName() + ", actual is " + expression.getClass().getSimpleName());
+        }
     }
 
     protected void assertNotNull(Expression expression) {
-        if (expression == NilExpression.INSTANCE)
+        if (expression == NilExpression.INSTANCE) {
             throw new IllegalArgumentException("nil pointer dereference");
+        }
     }
 
     protected void assertSymbol(Object o) {
-        boolean symbol = o instanceof String && ((String) o).charAt(0) != '"';
-        if (!symbol)
+        final boolean symbol = o instanceof String s && s.charAt(0) != '"';
+        if (!symbol) {
             throw new IllegalArgumentException(getClass().getSimpleName() + ": symbol expected, got " + o);
+        }
     }
 
     protected void assertList(Object o) {
-        if (!(o instanceof List))
+        if (!(o instanceof List)) {
             throw new IllegalArgumentException(getClass().getSimpleName() + ": list expected, got " + o);
+        }
     }
 
     protected void assertNotPredefined(Object o, Analyzer analyzer) {
-        if (analyzer.predefined().containsKey(o))
+        if (analyzer.predefined().containsKey(o)) {
             throw new IllegalArgumentException(o + " is predefined, can't overwrite");
+        }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -68,10 +75,12 @@ public abstract class BaseExpression implements Expression {
     }
 
     protected Expression trampoline(Expression e, Environment env) {
-        if (e.getClass() != ApplyExpression.class)
+        if (e.getClass() != ApplyExpression.class) {
             return e.eval(env);
-        if (Boolean.TRUE.equals(IN_TRAMPOLINE.get()))
+        }
+        if (Boolean.TRUE.equals(IN_TRAMPOLINE.get())) {
             return e;
+        }
         IN_TRAMPOLINE.set(true);
         TrampolineCtx ctx = new TrampolineCtx();
         ctx.environment = env;

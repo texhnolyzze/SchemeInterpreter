@@ -9,21 +9,21 @@ import java.util.List;
 
 public class SetExpression extends BaseExpression {
 
-    private final String var;
+    private final String name;
     private final Expression definition;
 
     public SetExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertNumArgs(list, 2);
         assertSymbol(list.get(1));
         assertNotPredefined(list.get(1), analyzer);
-        this.var = (String) list.get(1);
+        this.name = (String) list.get(1);
         this.definition = analyzer.analyze(list.get(2));
     }
 
     @Override
     public Expression eval(Environment env) {
-        env.set(var, definition.eval(env));
+        env.set(name, definition.eval(env));
         return NilExpression.INSTANCE;
     }
 

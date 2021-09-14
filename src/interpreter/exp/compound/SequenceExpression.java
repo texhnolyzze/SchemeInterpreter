@@ -12,12 +12,17 @@ public class SequenceExpression extends BaseExpression {
     private final List<Expression> seq;
 
     SequenceExpression(int index, List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertAtLeastNumArgs(index, list, 1);
         this.seq = new ArrayList<>(1);
         for (int i = index; i < list.size(); i++) {
             this.seq.add(analyzer.analyze(list.get(i)));
         }
+    }
+
+    public SequenceExpression(final List<Expression> seq) {
+        super(seq);
+        this.seq = seq;
     }
 
     @Override
@@ -26,8 +31,9 @@ public class SequenceExpression extends BaseExpression {
             Expression e = seq.get(i++);
             if (i < seq.size()) {
                 e.eval(env);
-            } else
+            } else {
                 return trampoline(e, env);
+            }
         }
     }
 

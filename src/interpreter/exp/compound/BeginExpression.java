@@ -11,7 +11,7 @@ public class BeginExpression extends BaseExpression {
     private final SequenceExpression seq;
 
     public BeginExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         this.seq = new SequenceExpression(1, list, analyzer);
     }
 

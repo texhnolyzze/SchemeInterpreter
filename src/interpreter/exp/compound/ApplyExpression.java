@@ -4,7 +4,6 @@ import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
 import interpreter.exp.Procedure;
-import interpreter.exp.self.SelfEvaluatingExpression;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ public class ApplyExpression extends BaseExpression {
     private final List<Expression> args;
 
     public ApplyExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         this.procedure = analyzer.analyze(list.get(0));
         this.args = new ArrayList<>(0);
         for (int i = 1; i < list.size(); i++) {
@@ -44,11 +43,7 @@ public class ApplyExpression extends BaseExpression {
     }
 
     private Procedure lookupProc(Environment env) {
-        Expression exp;
-        if (procedure instanceof SelfEvaluatingExpression)
-            exp = env.lookup(procedure.toString());
-        else
-            exp = procedure.eval(env);
+        Expression exp = procedure.eval(env);
         assertNotNull(exp);
         assertType(exp, Procedure.class);
         return (Procedure) exp;

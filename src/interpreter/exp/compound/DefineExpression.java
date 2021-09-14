@@ -10,12 +10,12 @@ import java.util.List;
 
 public class DefineExpression extends BaseExpression {
 
-    private final String var;
+    private final String name;
     private final Expression definition;
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     public DefineExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertAtLeastNumArgs(list, 2);
         if (list.get(1) instanceof List<?> procedure) { // procedure definition
             assertAtLeastNumArgs(0, procedure, 1);
@@ -24,7 +24,7 @@ public class DefineExpression extends BaseExpression {
                 Object param = procedure.get(i);
                 assertSymbol(param);
             }
-            this.var = (String) procedure.get(0);
+            this.name = (String) procedure.get(0);
             List<?> params = procedure.subList(1, procedure.size());
             List<?> body = list.subList(2, list.size());
             ArrayList<?> lambda = new ArrayList<>(List.of("lambda", params));
@@ -33,14 +33,14 @@ public class DefineExpression extends BaseExpression {
         } else {
             assertSymbol(list.get(1));
             assertNotPredefined(list.get(1), analyzer);
-            this.var = (String) list.get(1);
+            this.name = (String) list.get(1);
             this.definition = analyzer.analyze(list.get(2));
         }
     }
 
     @Override
     public final Expression eval(Environment env) {
-        env.define(var, definition.eval(env));
+        env.define(name, definition.eval(env));
         return NilExpression.INSTANCE;
     }
 

@@ -14,7 +14,7 @@ public class DelayExpression extends BaseExpression {
     private final LambdaExpression lambda;
 
     public DelayExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertAtLeastNumArgs(list, 1);
         List<Object> lambdaList = new ArrayList<>(1);
         lambdaList.add("lambda");

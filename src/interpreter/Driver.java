@@ -31,9 +31,11 @@ public class Driver {
 
     public void start() throws IOException {
         inOut.out().println(
-            "This is simple Scheme evaluator implemented in Java language.\n" +
-            "To use it just write as many Scheme expressions as you want and then type 'done' on the new line.\n" +
-            "To exit just type 'exit' on the new line."
+            """
+            This is a simple Scheme evaluator implemented in Java language
+            To use it just write as many Scheme expressions as you want and then type 'done' on the new line.
+            To exit just type 'exit' on the new line.
+            """
         );
         installLibrary();
         BufferedReader r = new BufferedReader(new InputStreamReader(inOut.in()));
@@ -47,12 +49,14 @@ public class Driver {
             s = r.readLine().strip();
             if (s.equals("done")) {
                 process(next, messageOnDone, print);
-                if (breakOnDone)
+                if (breakOnDone) {
                     break;
+                }
             } else if (s.equals("exit")) {
                 System.exit(0);
-            } else
+            } else {
                 next.append(s).append('\n');
+            }
         }
     }
 
@@ -88,14 +92,15 @@ public class Driver {
     private void eval(Object obj, final boolean last, boolean print) {
         Expression analyze = analyzer.analyze(obj);
         Expression eval = analyze.eval(rootEnvironment);
-        if (last && analyze.getClass() != PrintExpression.class && print)
+        if (last && analyze.getClass() != DisplayExpression.class && print) {
             inOut.out().println(eval);
+        }
     }
 
     public static void main(String[] args) throws IOException {
         Environment rootEnvironment = Environment.create(Map.of());
         Map<String, Class<? extends Expression>> predefined = new HashMap<>();
-        predefined.put("print", PrintExpression.class);
+        predefined.put("display", DisplayExpression.class);
         predefined.put("cons", ConsExpression.class);
         predefined.put("car", CarExpression.class);
         predefined.put("cdr", CdrExpression.class);
@@ -132,6 +137,9 @@ public class Driver {
         predefined.put("cond", CondExpression.class);
         predefined.put("delay", DelayExpression.class);
         predefined.put("force", ForceExpression.class);
+        predefined.put("assert", AssertExpression.class);
+        predefined.put("pair?", IsPairExpression.class);
+        predefined.put("remainder", ModExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
         driver.start();
     }

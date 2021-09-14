@@ -14,7 +14,7 @@ public class AndExpression extends BaseExpression {
     private final List<Expression> args;
 
     public AndExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertAtLeastNumArgs(list, 2);
         this.args = new ArrayList<>(2);
         for (int i = 1; i < list.size(); i++) {

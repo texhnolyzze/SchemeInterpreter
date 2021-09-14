@@ -46,37 +46,42 @@ public class Analyzer {
     private Expression analyzeString(Object exp) {
         if (exp.getClass() == String.class) {
             String s = (String) exp;
-            if (s.startsWith("\""))
+            if (s.startsWith("\"")) {
                 return new StringExpression(s);
-            else if (INT.matcher(s).matches())
+            } else if (INT.matcher(s).matches()) {
                 return new IntExpression(Long.parseLong(s));
-            else if (DEC.matcher(s).matches())
+            } else if (DEC.matcher(s).matches()) {
                 return new DecimalExpression(Double.parseDouble(s));
-            else if (NilExpression.INSTANCE.toString().equals(s))
+            } else if (NilExpression.INSTANCE.toString().equals(s)) {
                 return NilExpression.INSTANCE;
-            else if (TrueExpression.INSTANCE.toString().equals(s))
+            } else if (TrueExpression.INSTANCE.toString().equals(s)) {
                 return TrueExpression.INSTANCE;
-            else if (FalseExpression.INSTANCE.toString().equals(s))
+            } else if (FalseExpression.INSTANCE.toString().equals(s)) {
                 return FalseExpression.INSTANCE;
-            else
+            } else {
                 return new VariableExpression(s);
+            }
         }
         return null;
     }
 
     private Expression analyzeList(List<Object> exp) {
-        if (exp.isEmpty())
+        if (exp.isEmpty()) {
             throw new IllegalArgumentException("Empty expression");
+        }
         Object type = exp.get(0);
         Class<? extends Expression> c = predefined.get(type);
         if (c != null) {
-            Constructor<? extends Expression> constructor = constructors.computeIfAbsent(c, clazz -> {
-                try {
-                    return clazz.getDeclaredConstructor(List.class, Analyzer.class);
-                } catch (NoSuchMethodException e) {
-                    return fail((IllegalArgumentException) e.getCause());
+            Constructor<? extends Expression> constructor = constructors.computeIfAbsent(
+                c,
+                clazz -> {
+                    try {
+                        return clazz.getDeclaredConstructor(List.class, Analyzer.class);
+                    } catch (NoSuchMethodException e) {
+                        return fail((IllegalArgumentException) e.getCause());
+                    }
                 }
-            });
+            );
             try {
                 return constructor.newInstance(exp, this);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {

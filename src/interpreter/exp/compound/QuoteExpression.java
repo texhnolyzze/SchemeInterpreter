@@ -22,16 +22,16 @@ public class QuoteExpression extends BaseExpression {
     private final Expression arg;
 
     public QuoteExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertNumArgs(list, 1);
         this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
     }
 
     private Expression quote(Object o) {
         if (o instanceof List<?> list) {
-            if (list.isEmpty())
+            if (list.isEmpty()) {
                 return  NilExpression.INSTANCE;
-            else {
+            } else {
                 PairExpression curr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
                 PairExpression head = curr;
                 for (int i = 0;;) {
@@ -41,8 +41,9 @@ public class QuoteExpression extends BaseExpression {
                         PairExpression pair = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
                         curr.setCdr(pair);
                         curr = pair;
-                    } else
+                    } else {
                         break;
+                    }
                 }
                 return head;
             }
@@ -52,15 +53,15 @@ public class QuoteExpression extends BaseExpression {
     }
 
     public static Object unquote(Expression exp) {
-        if (exp instanceof PairExpression) {
-            PairExpression pair = (PairExpression) exp;
+        if (exp instanceof PairExpression pair) {
             Expression curr;
             List<Object> res = new ArrayList<>(8);
             do {
                 res.add(unquote(pair.car()));
                 curr = pair.cdr();
-                if (curr == NilExpression.INSTANCE)
+                if (curr == NilExpression.INSTANCE) {
                     break;
+                }
                 pair = (PairExpression) curr;
             } while (true);
             return res;

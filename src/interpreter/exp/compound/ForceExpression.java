@@ -11,7 +11,7 @@ public class ForceExpression extends BaseExpression {
     private final ApplyExpression force;
 
     public ForceExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+        super(list);
         assertNumArgs(list, 1);
         this.force = new ApplyExpression(List.of(list.get(1)), analyzer);
     }

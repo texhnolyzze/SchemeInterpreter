@@ -53,8 +53,6 @@ public class Analyzer {
                 return TrueExpression.INSTANCE;
             } else if (FalseExpression.INSTANCE.toString().equals(s)) {
                 return FalseExpression.INSTANCE;
-            } else if ("newline".equals(s)) {
-                return NewLineExpression.INSTANCE;
             } else if (predefined.containsKey(s) && BuiltInFunction.class.isAssignableFrom(predefined.get(s))) {
                 final Class<? extends Expression> c = predefined.get(s);
                 try {

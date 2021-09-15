@@ -3,8 +3,8 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
-import interpreter.exp.compound.procedure.Procedure;
-import interpreter.exp.compound.procedure.UserDefinedProcedure;
+import interpreter.exp.compound.function.Function;
+import interpreter.exp.compound.function.UserDefinedFunction;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public abstract class BaseExpression implements Expression {
         try {
             do {
                 ((ApplyExpression) e).storeProcedureToCall(ctx);
-                if (ctx.proc instanceof UserDefinedProcedure udp) {
+                if (ctx.proc instanceof UserDefinedFunction udp) {
                     e = udp.evalBound(ctx.environment);
                 } else {
                     e = ctx.proc.eval(ctx.environment, ctx.args);
@@ -55,7 +55,7 @@ public abstract class BaseExpression implements Expression {
     }
 
     protected static class TrampolineCtx {
-        Procedure proc;
+        Function proc;
         List<Expression> args;
         Environment environment;
     }

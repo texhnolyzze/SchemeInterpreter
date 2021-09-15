@@ -4,7 +4,8 @@ import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
 import interpreter.exp.Util;
-import interpreter.exp.compound.procedure.Procedure;
+import interpreter.exp.compound.function.Function;
+import interpreter.exp.compound.function.builtin.DisplayExpression;
 import interpreter.exp.self.NewLineExpression;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class ApplyExpression extends BaseExpression {
         Boolean prevState = IN_TRAMPOLINE.get();
         IN_TRAMPOLINE.set(false);
         try {
-            Procedure proc = lookupProc(env);
+            Function proc = lookupProc(env);
             return proc.eval(env, args);
         } finally {
             IN_TRAMPOLINE.set(prevState);
@@ -42,11 +43,11 @@ public class ApplyExpression extends BaseExpression {
         ctx.args = args;
     }
 
-    private Procedure lookupProc(Environment env) {
+    private Function lookupProc(Environment env) {
         Expression exp = procedure.eval(env);
         Util.assertNotNull(exp);
-        Util.assertType(exp, Procedure.class);
-        return (Procedure) exp;
+        Util.assertType(exp, Function.class);
+        return (Function) exp;
     }
 
     public boolean printingProc(final Environment env) {

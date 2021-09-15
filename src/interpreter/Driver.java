@@ -2,6 +2,7 @@ package interpreter;
 
 import interpreter.exp.Expression;
 import interpreter.exp.compound.*;
+import interpreter.exp.compound.function.builtin.*;
 import interpreter.exp.self.NewLineExpression;
 
 import java.io.*;

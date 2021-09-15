@@ -4,7 +4,7 @@ import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
 import interpreter.exp.Util;
-import interpreter.exp.compound.procedure.UserDefinedProcedure;
+import interpreter.exp.compound.function.UserDefinedFunction;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class LambdaExpression extends BaseExpression {
 
     @Override
     public Expression eval(Environment env) {
-        return new UserDefinedProcedure(body, params, env);
+        return new UserDefinedFunction(body, params, env);
     }
 
 }

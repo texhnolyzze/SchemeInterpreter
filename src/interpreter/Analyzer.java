@@ -3,7 +3,7 @@ package interpreter;
 import interpreter.exp.Expression;
 import interpreter.exp.VariableExpression;
 import interpreter.exp.compound.ApplyExpression;
-import interpreter.exp.compound.procedure.BuiltInProcedure;
+import interpreter.exp.compound.function.BuiltInFunction;
 import interpreter.exp.self.*;
 
 import java.lang.reflect.Constructor;
@@ -55,7 +55,7 @@ public class Analyzer {
                 return FalseExpression.INSTANCE;
             } else if ("newline".equals(s)) {
                 return NewLineExpression.INSTANCE;
-            } else if (predefined.containsKey(s) && BuiltInProcedure.class.isAssignableFrom(predefined.get(s))) {
+            } else if (predefined.containsKey(s) && BuiltInFunction.class.isAssignableFrom(predefined.get(s))) {
                 final Class<? extends Expression> c = predefined.get(s);
                 try {
                     return (Expression) c.getField("INSTANCE").get(c);
@@ -82,7 +82,7 @@ public class Analyzer {
                 } catch (NoSuchFieldException | IllegalAccessException e) {
                     throw new AssertionError();
                 }
-            } else if (BuiltInProcedure.class.isAssignableFrom(c)) {
+            } else if (BuiltInFunction.class.isAssignableFrom(c)) {
                 return new ApplyExpression(exp, this);
             } else {
                 Constructor<? extends Expression> constructor = constructors.computeIfAbsent(

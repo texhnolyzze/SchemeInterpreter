@@ -94,7 +94,47 @@ Tail recursion:
 ```
 
 Also nested tail recursion (in which one tail recursive function 
-in the middle of it's body calls another tail recursive function and so on) works.
+in the middle of it's body calls another tail recursive function and so on) works. For example: 
+
+```
+(define (f x)
+	(display x)
+	(newline)
+    (if (< x 1000000)
+		(if (= (% x 2) 0) 
+			(g (+ x 1)) 
+			(z (+ x 1)))
+	"done"))
+
+(define (g x)
+	(display x)
+	(newline)
+	(if (< x 1000000)
+		(if (= (% x 2) 0) 
+			(z (+ x 1)) 
+			(p (+ x 1)))
+	"done"))
+	
+(define (z x)
+	(display x)
+	(newline)
+	(if (< x 1000000)
+		(if (= (% x 2) 0) 
+			(p (+ x 1)) 
+			(f (+ x 1)))
+	"done"))
+	
+(define (p x)
+	(display x)
+	(newline)
+	(if (< x 1000000)
+		(if (= (% x 2) 0) 
+			(f (+ x 1)) 
+			(g (+ x 1)))
+	"done"))
+	
+(f 0)
+```
 
 quote and eval:
 

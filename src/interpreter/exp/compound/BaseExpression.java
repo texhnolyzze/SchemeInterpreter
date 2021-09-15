@@ -36,11 +36,11 @@ public abstract class BaseExpression implements Expression {
         ctx.environment = env;
         try {
             do {
-                ((ApplyExpression) e).storeProcedureToCall(ctx);
-                if (ctx.proc instanceof UserDefinedFunction udp) {
-                    e = udp.evalBound(ctx.environment);
+                ((ApplyExpression) e).storeFuncToCall(ctx);
+                if (ctx.func instanceof UserDefinedFunction fun) {
+                    e = fun.evalBound(ctx.environment);
                 } else {
-                    e = ctx.proc.eval(ctx.environment, ctx.args);
+                    e = ctx.func.eval(ctx.environment, ctx.args);
                 }
             } while (e instanceof ApplyExpression);
             return e;
@@ -55,7 +55,7 @@ public abstract class BaseExpression implements Expression {
     }
 
     protected static class TrampolineCtx {
-        Function proc;
+        Function func;
         List<Expression> args;
         Environment environment;
     }

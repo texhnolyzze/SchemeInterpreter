@@ -103,7 +103,7 @@ public class Driver {
             print &&
             (
                 analyze.getClass() != ApplyExpression.class ||
-                !((ApplyExpression) analyze).printingProc(rootEnvironment)
+                !((ApplyExpression) analyze).printingFunc(rootEnvironment)
             )
         ) {
             inOut.out().println(eval);
@@ -156,6 +156,7 @@ public class Driver {
         predefined.put("newline", NewLineExpression.class);
         predefined.put("<=", LessThanOrEqualExpression.class);
         predefined.put(">=", GreaterThanOrEqualExpression.class);
+        predefined.put("let", LetExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, InOut.create(System.in, System.out, System.err));
         driver.start();
     }

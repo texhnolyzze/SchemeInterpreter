@@ -14,7 +14,7 @@ public class UserDefinedFunction implements Function {
 
     private final SequenceExpression body;
     private final List<String> params;
-    private final Environment myEnvironment; // environment in which procedure was defined
+    private final Environment myEnvironment; // environment in which function was defined
 
     public UserDefinedFunction(SequenceExpression body, List<String> params, Environment myEnvironment) {
         this.body = body;

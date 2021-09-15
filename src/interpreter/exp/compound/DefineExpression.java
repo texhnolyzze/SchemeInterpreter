@@ -18,15 +18,15 @@ public class DefineExpression extends BaseExpression {
     public DefineExpression(List<?> list, Analyzer analyzer) {
         super(list);
         Util.assertAtLeastNumArgs(list, 2);
-        if (list.get(1) instanceof List<?> procedure) { // procedure definition
-            Util.assertAtLeastNumArgs(0, procedure, 1);
-            assertNotPredefined(procedure.get(0), analyzer);
-            for (int i = 0; i < procedure.size(); i++) {
-                Object param = procedure.get(i);
+        if (list.get(1) instanceof List<?> func) { // function definition
+            Util.assertAtLeastNumArgs(0, func, 1);
+            assertNotPredefined(func.get(0), analyzer);
+            for (int i = 0; i < func.size(); i++) {
+                Object param = func.get(i);
                 Util.assertSymbol(param);
             }
-            this.name = (String) procedure.get(0);
-            List<?> params = procedure.subList(1, procedure.size());
+            this.name = (String) func.get(0);
+            List<?> params = func.subList(1, func.size());
             List<?> body = list.subList(2, list.size());
             ArrayList<?> lambda = new ArrayList<>(List.of("lambda", params));
             Util.append(lambda, body);

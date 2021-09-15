@@ -14,7 +14,7 @@ public class TrueExpression extends BooleanExpression {
 
     @Override
     public String toString() {
-        return "true";
+        return "#t";
     }
 
 }

@@ -14,7 +14,7 @@ public class FalseExpression extends BooleanExpression {
 
     @Override
     public String toString() {
-        return "false";
+        return "#f";
     }
 
 }

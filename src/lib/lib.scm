@@ -1,17 +1,10 @@
 ;;Stream support
 
-(define (cons-stream x y)
-	(cons (cons x y) false))
+(define (cons-stream x y) (cons x y))
 
-(define (stream-car stream)
-	(car (car stream)))
+(define (stream-car stream) (car stream))
 
-(define (stream-cdr stream)
-	(if (cdr stream)
-		(cdr stream)
-	(begin
-		(set-cdr! stream (force (cdr (car stream))))
-		(cdr stream))))
+(define (stream-cdr stream) (force (cdr stream)))
 
 (define (stream-ref s n)
 	(if (= n 0)
@@ -75,5 +68,7 @@
   (cond ((> x 0) x)
         ((= x 0) 0)
         ((< x 0) (- x))))
+
+(define (display-line x) (display x) (newline))
 
 done

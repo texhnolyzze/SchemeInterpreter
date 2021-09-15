@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 import interpreter.exp.self.NilExpression;
 
 import java.util.ArrayList;
@@ -16,22 +17,22 @@ public class DefineExpression extends BaseExpression {
     @SuppressWarnings("ForLoopReplaceableByForEach")
     public DefineExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertAtLeastNumArgs(list, 2);
+        Util.assertAtLeastNumArgs(list, 2);
         if (list.get(1) instanceof List<?> procedure) { // procedure definition
-            assertAtLeastNumArgs(0, procedure, 1);
+            Util.assertAtLeastNumArgs(0, procedure, 1);
             assertNotPredefined(procedure.get(0), analyzer);
             for (int i = 0; i < procedure.size(); i++) {
                 Object param = procedure.get(i);
-                assertSymbol(param);
+                Util.assertSymbol(param);
             }
             this.name = (String) procedure.get(0);
             List<?> params = procedure.subList(1, procedure.size());
             List<?> body = list.subList(2, list.size());
             ArrayList<?> lambda = new ArrayList<>(List.of("lambda", params));
-            append(lambda, body);
+            Util.append(lambda, body);
             this.definition = new LambdaExpression(lambda, analyzer);
         } else {
-            assertSymbol(list.get(1));
+            Util.assertSymbol(list.get(1));
             assertNotPredefined(list.get(1), analyzer);
             this.name = (String) list.get(1);
             this.definition = analyzer.analyze(list.get(2));

@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class IfExpression extends BaseExpression {
 
     public IfExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertNumArgs(list, 3);
+        Util.assertNumArgs(list, 3);
         this.predicate = analyzer.analyze(list.get(1));
         this.consequent = analyzer.analyze(list.get(2));
         this.alternative = analyzer.analyze(list.get(3));
@@ -24,8 +25,9 @@ public class IfExpression extends BaseExpression {
     @Override
     public Expression eval(Environment env) {
         Expression eval = predicate.eval(env);
-        if (eval == TrueExpression.INSTANCE)
+        if (eval == TrueExpression.INSTANCE) {
             return trampoline(consequent, env);
+        }
         return trampoline(alternative, env);
     }
 

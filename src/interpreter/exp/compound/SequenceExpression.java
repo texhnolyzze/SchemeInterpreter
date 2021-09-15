@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +14,11 @@ public class SequenceExpression extends BaseExpression {
 
     SequenceExpression(int index, List<?> list, Analyzer analyzer) {
         super(list);
-        assertAtLeastNumArgs(index, list, 1);
+        Util.assertAtLeastNumArgs(index, list, 1);
         this.seq = new ArrayList<>(1);
         for (int i = index; i < list.size(); i++) {
             this.seq.add(analyzer.analyze(list.get(i)));
         }
-    }
-
-    public SequenceExpression(final List<Expression> seq) {
-        super(seq);
-        this.seq = seq;
     }
 
     @Override

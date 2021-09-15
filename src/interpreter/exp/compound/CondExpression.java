@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 import interpreter.exp.self.FalseExpression;
 import interpreter.exp.self.TrueExpression;
 
@@ -15,14 +16,14 @@ public class CondExpression extends BaseExpression {
 
     public CondExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertAtLeastNumArgs(list, 1);
+        Util.assertAtLeastNumArgs(list, 1);
         this.conditions = new ArrayList<>(2);
         for (int i = 1; i < list.size(); i++) {
             Object o = list.get(i);
-            assertList(o);
+            Util.assertList(o);
             List<?> condition = (List<?>) o;
-            assertNumArgs(0, condition, 2);
-            boolean isElse = condition.get(0).equals("else");
+            Util.assertNumArgs(0, condition, 2);
+            final boolean isElse = condition.get(0).equals("else");
             if (isElse && i != list.size() - 1) {
                 throw new IllegalArgumentException("'else' must be last statement in 'cond' expression");
             }

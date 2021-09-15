@@ -1,13 +1,10 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
-
-import java.util.List;
-
 public class GreaterThanExpression extends NumberCompareExpression {
 
-    public GreaterThanExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+    public static final GreaterThanExpression INSTANCE = new GreaterThanExpression();
+
+    private GreaterThanExpression() {
     }
 
     @Override

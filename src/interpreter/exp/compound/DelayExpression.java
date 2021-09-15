@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,11 @@ public class DelayExpression extends BaseExpression {
 
     public DelayExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertAtLeastNumArgs(list, 1);
+        Util.assertAtLeastNumArgs(list, 1);
         List<Object> lambdaList = new ArrayList<>(1);
         lambdaList.add("lambda");
         lambdaList.add(emptyList());
-        append(lambdaList, list.subList(1, list.size()));
+        Util.append(lambdaList, list.subList(1, list.size()));
         this.lambda = new LambdaExpression(lambdaList, analyzer);
     }
 

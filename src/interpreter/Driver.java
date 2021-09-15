@@ -2,6 +2,7 @@ package interpreter;
 
 import interpreter.exp.Expression;
 import interpreter.exp.compound.*;
+import interpreter.exp.self.NewLineExpression;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -26,7 +27,7 @@ public class Driver {
         this.rootEnvironment = rootEnvironment;
         this.inOut = inOut;
         this.reader = new LispReader();
-        this.analyzer = new Analyzer(inOut, predefined);
+        this.analyzer = new Analyzer(predefined);
     }
 
     public void start() throws IOException {
@@ -89,10 +90,21 @@ public class Driver {
         next.setLength(0);
     }
 
-    private void eval(Object obj, final boolean last, boolean print) {
-        Expression analyze = analyzer.analyze(obj);
-        Expression eval = analyze.eval(rootEnvironment);
-        if (last && analyze.getClass() != DisplayExpression.class && print) {
+    private void eval(
+        final Object obj,
+        final boolean last,
+        final boolean print
+    ) {
+        final Expression analyze = analyzer.analyze(obj);
+        final Expression eval = analyze.eval(rootEnvironment);
+        if (
+            last &&
+            print &&
+            (
+                analyze.getClass() != ApplyExpression.class ||
+                !((ApplyExpression) analyze).printingProc(rootEnvironment)
+            )
+        ) {
             inOut.out().println(eval);
         }
     }
@@ -140,7 +152,10 @@ public class Driver {
         predefined.put("assert", AssertExpression.class);
         predefined.put("pair?", IsPairExpression.class);
         predefined.put("remainder", ModExpression.class);
-        Driver driver = new Driver(rootEnvironment, predefined, new InOut(System.in, System.out, System.err));
+        predefined.put("newline", NewLineExpression.class);
+        predefined.put("<=", LessThanOrEqualExpression.class);
+        predefined.put(">=", GreaterThanOrEqualExpression.class);
+        Driver driver = new Driver(rootEnvironment, predefined, InOut.create(System.in, System.out, System.err));
         driver.start();
     }
 

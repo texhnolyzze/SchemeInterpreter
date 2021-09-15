@@ -2,22 +2,16 @@ package interpreter.exp;
 
 import interpreter.Environment;
 
-public class VariableExpression implements Expression {
-
-    private final String var;
-
-    public VariableExpression(String var) {
-        this.var = var;
-    }
+public record VariableExpression(String name) implements Expression {
 
     @Override
     public Expression eval(Environment env) {
-        return env.lookup(var);
+        return env.lookup(name);
     }
 
     @Override
     public String toString() {
-        return var;
+        return name;
     }
 
 }

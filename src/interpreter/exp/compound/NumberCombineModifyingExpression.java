@@ -1,17 +1,15 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
 import interpreter.exp.self.NumberExpression;
 
-import java.util.List;
 import java.util.Map;
 
 public abstract class NumberCombineModifyingExpression extends NumberCombineExpression {
 
-    protected NumberCombineModifyingExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+    protected NumberCombineModifyingExpression() {
+        super();
     }
 
     @Override

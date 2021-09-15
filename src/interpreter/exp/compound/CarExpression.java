@@ -1,28 +1,30 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.PairExpression;
 
 import java.util.List;
 
-public class CarExpression extends BaseExpression {
+public class CarExpression implements BuiltInProcedure {
 
-    private final Expression arg;
+    public static final CarExpression INSTANCE = new CarExpression();
 
-    public CarExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        assertNumArgs(list, 1);
-        this.arg = analyzer.analyze(list.get(1));
+    private CarExpression() {
     }
 
     @Override
-    public Expression eval(Environment env) {
-        Expression eval = arg.eval(env);
-        assertNotNull(eval);
-        assertType(eval, PairExpression.class);
-        return ((PairExpression) eval).car();
+    public Expression eval(
+        final Environment env,
+        final List<Expression> args
+    ) {
+        Util.assertNumArgs(0, args, 1);
+        final Expression arg = args.get(0).eval(env);
+        Util.assertNotNull(arg);
+        Util.assertType(arg, PairExpression.class);
+        return ((PairExpression) arg).car();
     }
 
 }

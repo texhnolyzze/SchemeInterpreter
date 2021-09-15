@@ -2,6 +2,8 @@ package interpreter.exp.self;
 
 public class IntExpression extends NumberExpression {
 
+    public static final IntExpression ZERO = new IntExpression(0L);
+
     private long value;
 
     public IntExpression(long value) {

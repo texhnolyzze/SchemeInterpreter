@@ -1,35 +1,33 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.FalseExpression;
 import interpreter.exp.self.TrueExpression;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class OrExpression extends BaseExpression {
+public class OrExpression implements BuiltInProcedure {
 
-    private final List<Expression> args;
+    public static final OrExpression INSTANCE = new OrExpression();
 
-    public OrExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        assertAtLeastNumArgs(list, 2);
-        this.args = new ArrayList<>(2);
-        for (int i = 1; i < list.size(); i++) {
-            this.args.add(analyzer.analyze(list.get(i)));
-        }
+    private OrExpression() {
     }
 
     @Override
-    @SuppressWarnings("ForLoopReplaceableByForEach")
-    public Expression eval(Environment env) {
+    public Expression eval(
+        final Environment env,
+        final List<Expression> args
+    ) {
+        Util.assertAtLeastNumArgs(0, args, 2);
         for (int i = 0; i < args.size(); i++) {
-            Expression e = args.get(i);
-            Expression eval = e.eval(env);
-            if (eval == TrueExpression.INSTANCE)
+            final Expression e = args.get(i);
+            final Expression eval = e.eval(env);
+            if (eval == TrueExpression.INSTANCE) {
                 return TrueExpression.INSTANCE;
+            }
         }
         return FalseExpression.INSTANCE;
     }

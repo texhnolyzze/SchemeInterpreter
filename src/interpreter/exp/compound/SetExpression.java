@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 import interpreter.exp.self.NilExpression;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class SetExpression extends BaseExpression {
 
     public SetExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertNumArgs(list, 2);
-        assertSymbol(list.get(1));
+        Util.assertNumArgs(list, 2);
+        Util.assertSymbol(list.get(1));
         assertNotPredefined(list.get(1), analyzer);
         this.name = (String) list.get(1);
         this.definition = analyzer.analyze(list.get(2));

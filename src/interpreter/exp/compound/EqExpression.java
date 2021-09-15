@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 import interpreter.exp.self.FalseExpression;
 import interpreter.exp.self.TrueExpression;
 
@@ -15,7 +16,7 @@ public class EqExpression extends BaseExpression {
 
     public EqExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertNumArgs(list, 2);
+        Util.assertNumArgs(list, 2);
         this.left = analyzer.analyze(list.get(1));
         this.right = analyzer.analyze(list.get(2));
     }

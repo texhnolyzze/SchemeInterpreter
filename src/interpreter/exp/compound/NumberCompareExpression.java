@@ -1,36 +1,34 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.FalseExpression;
 import interpreter.exp.self.NumberExpression;
 import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
 
-public abstract class NumberCompareExpression extends BaseExpression {
+public abstract class NumberCompareExpression implements BuiltInProcedure {
 
-    private final Expression left;
-    private final Expression right;
-
-    protected NumberCompareExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        assertNumArgs(list, 2);
-        this.left = analyzer.analyze(list.get(1));
-        this.right = analyzer.analyze(list.get(2));
+    protected NumberCompareExpression() {
     }
 
     @Override
-    public Expression eval(Environment env) {
-        Expression l = left.eval(env);
-        assertNotNull(l);
-        assertType(l, NumberExpression.class);
-        Expression r = right.eval(env);
-        assertNotNull(r);
-        assertType(r, NumberExpression.class);
-        long compare = ((NumberExpression) l).compare(((NumberExpression) r));
-        return matches(compare) ? TrueExpression.INSTANCE : FalseExpression.INSTANCE;
+    public Expression eval(
+        final Environment env,
+        final List<Expression> args
+    ) {
+        Util.assertNumArgs(0, args, 2);
+        final Expression left = args.get(0).eval(env);
+        Util.assertNotNull(left);
+        Util.assertType(left, NumberExpression.class);
+        final Expression right = args.get(1).eval(env);
+        Util.assertNotNull(right);
+        Util.assertType(right, NumberExpression.class);
+        final long cmp = ((NumberExpression) left).compare(((NumberExpression) right));
+        return matches(cmp) ? TrueExpression.INSTANCE : FalseExpression.INSTANCE;
     }
 
     protected abstract boolean matches(long compare);

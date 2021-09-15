@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 import interpreter.exp.self.NilExpression;
 import interpreter.exp.self.TrueExpression;
 
@@ -17,7 +18,7 @@ public class AssertExpression extends BaseExpression {
         final Analyzer analyzer
     ) {
         super(list);
-        assertNumArgs(list, 1);
+        Util.assertNumArgs(list, 1);
         this.expr = analyzer.analyze(list.get(1));
     }
 

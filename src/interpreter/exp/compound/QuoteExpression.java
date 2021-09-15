@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 import interpreter.exp.self.NilExpression;
 import interpreter.exp.self.PairExpression;
 import interpreter.exp.self.SymbolExpression;
@@ -23,7 +24,7 @@ public class QuoteExpression extends BaseExpression {
 
     public QuoteExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertNumArgs(list, 1);
+        Util.assertNumArgs(list, 1);
         this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
     }
 

@@ -1,14 +1,13 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.exp.self.NumberExpression;
-
-import java.util.List;
 
 public class ModExpression extends NumberCombineCopyingExpression {
 
-    public ModExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+    public static final ModExpression INSTANCE = new ModExpression();
+
+    private ModExpression() {
+        super();
     }
 
     @Override

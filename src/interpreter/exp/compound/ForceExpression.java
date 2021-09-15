@@ -3,6 +3,7 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class ForceExpression extends BaseExpression {
 
     public ForceExpression(List<?> list, Analyzer analyzer) {
         super(list);
-        assertNumArgs(list, 1);
+        Util.assertNumArgs(list, 1);
         this.force = new ApplyExpression(List.of(list.get(1)), analyzer);
     }
 

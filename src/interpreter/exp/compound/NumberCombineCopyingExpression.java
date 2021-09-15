@@ -1,15 +1,12 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.self.NumberExpression;
 
-import java.util.List;
-
 public abstract class NumberCombineCopyingExpression extends NumberCombineExpression {
 
-    protected NumberCombineCopyingExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+    protected NumberCombineCopyingExpression() {
+        super();
     }
 
     @Override

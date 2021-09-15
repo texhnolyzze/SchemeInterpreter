@@ -1,38 +1,35 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.NilExpression;
 import interpreter.exp.self.PairExpression;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListExpression extends BaseExpression {
-    
-    private final List<Expression> list;
+public class ListExpression implements BuiltInProcedure {
 
-    public ListExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        this.list = new ArrayList<>(0);
-        for (int i = 1; i < list.size(); i++) {
-            this.list.add(analyzer.analyze(list.get(i)));
-        }
+    public static final ListExpression INSTANCE = new ListExpression();
+
+    private ListExpression() {
     }
-
+    
     @Override
-    public Expression eval(Environment env) {
-        if (list.isEmpty()) {
+    public Expression eval(
+        final Environment env,
+        final List<Expression> args
+    ) {
+        if (args.isEmpty()) {
             return NilExpression.INSTANCE;
         }
-        PairExpression head = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
+        final PairExpression head = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
         PairExpression curr = head;
         for (int i = 0;;) {
-            Expression next = list.get(i++);
+            Expression next = args.get(i++);
             Expression eval = next.eval(env);
             curr.setCar(eval);
-            if (i < list.size()) {
+            if (i < args.size()) {
                 PairExpression cdr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
                 curr.setCdr(cdr);
                 curr = cdr;
@@ -42,5 +39,5 @@ public class ListExpression extends BaseExpression {
         }
         return head;
     }
-    
+
 }

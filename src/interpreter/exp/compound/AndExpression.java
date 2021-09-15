@@ -1,35 +1,33 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.FalseExpression;
 import interpreter.exp.self.TrueExpression;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AndExpression extends BaseExpression {
+public class AndExpression implements BuiltInProcedure {
 
-    private final List<Expression> args;
+    public static final AndExpression INSTANCE = new AndExpression();
 
-    public AndExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        assertAtLeastNumArgs(list, 2);
-        this.args = new ArrayList<>(2);
-        for (int i = 1; i < list.size(); i++) {
-            args.add(analyzer.analyze(list.get(i)));
-        }
+    private AndExpression() {
     }
 
     @Override
-    @SuppressWarnings("ForLoopReplaceableByForEach")
-    public Expression eval(Environment env) {
+    public Expression eval(
+        final Environment env,
+        final List<Expression> args
+    ) {
+        Util.assertAtLeastNumArgs(0, args, 2);
         for (int i = 0; i < args.size(); i++) {
             Expression e = args.get(i);
             Expression eval = e.eval(env);
-            if (eval == FalseExpression.INSTANCE)
+            if (eval == FalseExpression.INSTANCE) {
                 return FalseExpression.INSTANCE;
+            }
         }
         return TrueExpression.INSTANCE;
     }

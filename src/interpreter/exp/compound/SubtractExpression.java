@@ -1,14 +1,16 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
+import interpreter.exp.Expression;
+import interpreter.exp.self.IntExpression;
 import interpreter.exp.self.NumberExpression;
 
 import java.util.List;
 
 public class SubtractExpression extends NumberCombineCopyingExpression {
 
-    public SubtractExpression(List<?> list, Analyzer analyzer) {
-        super(negateSingleArgument(list), analyzer);
+    public static final SubtractExpression INSTANCE = new SubtractExpression();
+
+    private SubtractExpression() {
     }
 
     @Override
@@ -16,10 +18,15 @@ public class SubtractExpression extends NumberCombineCopyingExpression {
         return left.sub(right);
     }
 
-    private static List<?> negateSingleArgument(List<?> list) {
-        if (list.size() == 2)
-            return List.of(list.get(0), "0", list.get(1));
-        return list;
+    /**
+     * Negate single argument
+     */
+    @Override
+    protected List<Expression> modify(final List<Expression> args) {
+        if (args.size() == 1) {
+            args.add(0, IntExpression.ZERO.copy());
+        }
+        return super.modify(args);
     }
 
 }

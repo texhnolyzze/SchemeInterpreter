@@ -1,14 +1,13 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.exp.self.NumberExpression;
-
-import java.util.List;
 
 public class MultiplyExpression extends NumberCombineCopyingExpression {
 
-    public MultiplyExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+    public static final MultiplyExpression INSTANCE = new MultiplyExpression();
+
+    private MultiplyExpression() {
+        super();
     }
 
     @Override

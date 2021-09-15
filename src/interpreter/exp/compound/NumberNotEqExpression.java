@@ -1,13 +1,10 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
-
-import java.util.List;
-
 public class NumberNotEqExpression extends NumberCompareExpression {
 
-    public NumberNotEqExpression(List<?> list, Analyzer analyzer) {
-        super(list, analyzer);
+    public static final NumberNotEqExpression INSTANCE = new NumberNotEqExpression();
+
+    private NumberNotEqExpression() {
     }
 
     @Override

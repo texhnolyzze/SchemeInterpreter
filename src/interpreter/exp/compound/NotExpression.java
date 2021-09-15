@@ -1,27 +1,29 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.BooleanExpression;
 
 import java.util.List;
 
-public class NotExpression extends BaseExpression {
+public class NotExpression implements BuiltInProcedure {
 
-    private final Expression arg;
+    public static final NotExpression INSTANCE = new NotExpression();
 
-    public NotExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        assertNumArgs(list, 1);
-        this.arg = analyzer.analyze(list.get(1));
+    private NotExpression() {
     }
 
     @Override
-    public Expression eval(Environment env) {
-        Expression eval = arg.eval(env);
-        assertNotNull(eval);
-        assertType(eval, BooleanExpression.class);
+    public Expression eval(
+        final Environment env,
+        final List<Expression> args
+    ) {
+        Util.assertNumArgs(0, args, 1);
+        final Expression eval = args.get(0).eval(env);
+        Util.assertNotNull(eval);
+        Util.assertType(eval, BooleanExpression.class);
         return ((BooleanExpression) eval).not();
     }
 

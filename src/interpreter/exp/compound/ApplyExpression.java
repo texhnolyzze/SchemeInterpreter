@@ -3,12 +3,12 @@ package interpreter.exp.compound;
 import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
-import interpreter.exp.Procedure;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.Procedure;
+import interpreter.exp.self.NewLineExpression;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ApplyExpression extends BaseExpression {
 
@@ -30,8 +30,7 @@ public class ApplyExpression extends BaseExpression {
         IN_TRAMPOLINE.set(false);
         try {
             Procedure proc = lookupProc(env);
-            Environment extended = extendProcEnvironment(proc, env);
-            return proc.eval(extended);
+            return proc.eval(env, args);
         } finally {
             IN_TRAMPOLINE.set(prevState);
         }
@@ -39,27 +38,20 @@ public class ApplyExpression extends BaseExpression {
 
     void storeProcedureToCall(TrampolineCtx ctx) {
         ctx.proc = lookupProc(ctx.environment);
-        ctx.environment = extendProcEnvironment(ctx.proc, ctx.environment);
+        ctx.environment = ctx.proc.bind(args, ctx.environment);
+        ctx.args = args;
     }
 
     private Procedure lookupProc(Environment env) {
         Expression exp = procedure.eval(env);
-        assertNotNull(exp);
-        assertType(exp, Procedure.class);
+        Util.assertNotNull(exp);
+        Util.assertType(exp, Procedure.class);
         return (Procedure) exp;
     }
 
-    private Environment extendProcEnvironment(Procedure proc, Environment env) {
-        List<String> params = proc.params();
-        assertNumArgs(0, args, params.size());
-        Environment procEnvironment = proc.env();
-        Map<String, Expression> boundArgs = new HashMap<>(params.size());
-        for (int i = 0; i < params.size(); i++) {
-            String param = params.get(i);
-            Expression arg = args.get(i).eval(env);
-            boundArgs.put(param, arg);
-        }
-        return procEnvironment.extend(boundArgs);
+    public boolean printingProc(final Environment env) {
+        final Expression proc = procedure.eval(env);
+        return proc == DisplayExpression.INSTANCE || proc == NewLineExpression.INSTANCE;
     }
 
 }

@@ -1,26 +1,28 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.PairExpression;
 
 import java.util.List;
 
-public class ConsExpression extends BaseExpression {
+public class ConsExpression implements BuiltInProcedure {
 
-    private final Expression car;
-    private final Expression cdr;
+    public static final ConsExpression INSTANCE = new ConsExpression();
 
-    public ConsExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        assertNumArgs(list, 2);
-        this.car = analyzer.analyze(list.get(1));
-        this.cdr = analyzer.analyze(list.get(2));
+    private ConsExpression() {
     }
 
     @Override
-    public Expression eval(Environment env) {
+    public Expression eval(
+        final Environment env,
+        final List<Expression> args
+    ) {
+        Util.assertNumArgs(0, args, 2);
+        final Expression car = args.get(0).eval(env);
+        final Expression cdr = args.get(1).eval(env);
         return PairExpression.cons(car.eval(env), cdr.eval(env));
     }
 

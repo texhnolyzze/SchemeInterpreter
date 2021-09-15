@@ -1,36 +1,29 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
+import interpreter.exp.Util;
+import interpreter.exp.compound.procedure.BuiltInProcedure;
 import interpreter.exp.self.NumberExpression;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public abstract class NumberCombineExpression extends BaseExpression {
+public abstract class NumberCombineExpression implements BuiltInProcedure {
 
-    private final List<Expression> args;
-
-    protected NumberCombineExpression(List<?> list, Analyzer analyzer) {
-        super(list);
-        assertAtLeastNumArgs(list, 2);
-        this.args = new ArrayList<>(2);
-        for (int i = 1; i < list.size(); i++) {
-            this.args.add(analyzer.analyze(list.get(i)));
-        }
+    protected NumberCombineExpression() {
     }
 
     @Override
     @SuppressWarnings("ForLoopReplaceableByForEach")
-    public final Expression eval(Environment env) {
+    public Expression eval(Environment env, List<Expression> args) {
+        args = modify(args);
         NumberExpression prev = null;
         NumberExpression res = null;
         for (int i = 0; i < args.size(); i++) {
             Expression e = args.get(i);
             Expression eval = e.eval(env);
-            assertNotNull(eval);
-            assertType(eval, NumberExpression.class);
+            Util.assertNotNull(eval);
+            Util.assertType(eval, NumberExpression.class);
             if (res == null) {
                 NumberExpression number = (NumberExpression) eval;
                 res = mustCopy() ? number.copy() : number;
@@ -48,5 +41,8 @@ public abstract class NumberCombineExpression extends BaseExpression {
     protected abstract NumberExpression combine(NumberExpression left, NumberExpression right);
     protected abstract boolean mustCopy();
     protected abstract void onTypeChanged(Environment env, NumberExpression prev, NumberExpression newType);
+    protected List<Expression> modify(final List<Expression> args) {
+        return args;
+    }
 
 }

@@ -26,4 +26,9 @@ public class ConsExpression implements BuiltInFunction {
         return PairExpression.cons(car, cdr);
     }
 
+    @Override
+    public String toString() {
+        return "cons";
+    }
+
 }

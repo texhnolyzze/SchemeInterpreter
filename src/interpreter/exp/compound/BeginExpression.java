@@ -34,4 +34,9 @@ public class BeginExpression extends BaseExpression {
         return new BeginExpression(seq.expand(params, env));
     }
 
+    @Override
+    public String toString() {
+        return "(begin " + seq.toString() + ")";
+    }
+
 }

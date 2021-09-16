@@ -46,4 +46,9 @@ public class EvalExpression extends BaseExpression {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(eval " + expression.toString() + ")";
+    }
+
 }

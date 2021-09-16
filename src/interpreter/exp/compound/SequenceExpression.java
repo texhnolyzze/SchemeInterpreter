@@ -8,6 +8,8 @@ import interpreter.exp.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SequenceExpression extends BaseExpression {
 
@@ -51,6 +53,11 @@ public class SequenceExpression extends BaseExpression {
             expanded.add(seq.get(i).expand(params, env));
         }
         return new SequenceExpression(expanded);
+    }
+
+    @Override
+    public String toString() {
+        return seq.stream().map(Objects::toString).collect(Collectors.joining(" "));
     }
 
 }

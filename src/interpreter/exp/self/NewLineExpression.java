@@ -17,4 +17,9 @@ public class NewLineExpression extends SelfEvaluatingExpression {
         return NilExpression.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "newline";
+    }
+
 }

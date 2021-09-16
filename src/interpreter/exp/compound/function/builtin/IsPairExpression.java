@@ -29,4 +29,9 @@ public class IsPairExpression implements BuiltInFunction {
                FalseExpression.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "pair?";
+    }
+
 }

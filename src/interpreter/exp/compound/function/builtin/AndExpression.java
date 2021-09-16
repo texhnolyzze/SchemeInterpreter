@@ -32,4 +32,9 @@ public class AndExpression implements BuiltInFunction {
         return TrueExpression.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "and";
+    }
+
 }

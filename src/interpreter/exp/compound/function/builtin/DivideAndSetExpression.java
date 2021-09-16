@@ -15,4 +15,9 @@ public class DivideAndSetExpression extends NumberCombineModifyingExpression {
         return left.div(right);
     }
 
+    @Override
+    public String toString() {
+        return "/=";
+    }
+
 }

@@ -47,4 +47,9 @@ public class MacroExpression extends BaseExpression {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(macro (" + String.join(" ", params) + ") " + body.toString() + ")";
+    }
+
 }

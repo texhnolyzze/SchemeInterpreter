@@ -15,4 +15,9 @@ public class ModExpression extends NumberCombineCopyingExpression {
         return left.mod(right);
     }
 
+    @Override
+    public String toString() {
+        return "%";
+    }
+
 }

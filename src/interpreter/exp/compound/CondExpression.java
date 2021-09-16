@@ -10,6 +10,7 @@ import interpreter.exp.self.TrueExpression;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CondExpression extends BaseExpression {
 
@@ -69,6 +70,11 @@ public class CondExpression extends BaseExpression {
             conds.add(expanded);
         }
         return new CondExpression(conds);
+    }
+
+    @Override
+    public String toString() {
+        return "(cond " + conditions.stream().map(cond -> "(" + cond.get(0).toString() + ") (" + cond.get(1).toString() + ")").collect(Collectors.joining(" ")) + ")";
     }
 
 }

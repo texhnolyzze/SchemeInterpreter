@@ -58,4 +58,9 @@ public class Macro implements Function {
         return params;
     }
 
+    @Override
+    public String toString() {
+        return "(macro (" + String.join(" ", params) + ") " + body.toString() + ")";
+    }
+
 }

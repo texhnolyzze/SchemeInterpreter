@@ -12,4 +12,9 @@ public class NumberEqExpression extends NumberCompareExpression {
         return compare == 0;
     }
 
+    @Override
+    public String toString() {
+        return "=";
+    }
+
 }

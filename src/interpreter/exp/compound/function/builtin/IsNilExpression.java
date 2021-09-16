@@ -29,4 +29,9 @@ public class IsNilExpression implements BuiltInFunction {
                FalseExpression.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "null?";
+    }
+
 }

@@ -1,4 +1,4 @@
-package interpreter.exp.compound;
+package interpreter.exp.compound.function.builtin;
 
 import interpreter.Environment;
 import interpreter.exp.Expression;
@@ -29,6 +29,11 @@ public class RaiseExpression implements BuiltInFunction {
                 formatArgs
             )
         );
+    }
+
+    @Override
+    public String toString() {
+        return "raise";
     }
 
 }

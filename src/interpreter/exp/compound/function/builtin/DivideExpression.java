@@ -15,4 +15,9 @@ public class DivideExpression extends NumberCombineCopyingExpression {
         return left.div(right);
     }
 
+    @Override
+    public String toString() {
+        return "/";
+    }
+
 }

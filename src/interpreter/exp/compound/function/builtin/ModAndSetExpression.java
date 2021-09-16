@@ -15,4 +15,9 @@ public class ModAndSetExpression extends NumberCombineModifyingExpression {
         return left.mod(right);
     }
 
+    @Override
+    public String toString() {
+        return "%=";
+    }
+
 }

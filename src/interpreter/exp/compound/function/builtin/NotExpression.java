@@ -27,4 +27,9 @@ public class NotExpression implements BuiltInFunction {
         return ((BooleanExpression) eval).not();
     }
 
+    @Override
+    public String toString() {
+        return "not";
+    }
+
 }

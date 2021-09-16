@@ -32,4 +32,9 @@ public class OrExpression implements BuiltInFunction {
         return FalseExpression.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "or";
+    }
+
 }

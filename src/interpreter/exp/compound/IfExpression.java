@@ -55,4 +55,9 @@ public class IfExpression extends BaseExpression {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(if " + predicate.toString() + " " + consequent.toString() + " " + alternative.toString() + ")";
+    }
+
 }

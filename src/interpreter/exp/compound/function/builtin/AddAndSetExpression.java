@@ -14,5 +14,10 @@ public class AddAndSetExpression extends NumberCombineModifyingExpression {
     protected NumberExpression combine(NumberExpression left, NumberExpression right) {
         return left.add(right);
     }
-    
+
+    @Override
+    public String toString() {
+        return "+=";
+    }
+
 }

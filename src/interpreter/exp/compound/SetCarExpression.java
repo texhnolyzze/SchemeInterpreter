@@ -51,4 +51,9 @@ public class SetCarExpression extends BaseExpression {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(set-car! " + target.toString() + " " + value.toString() + ")";
+    }
+
 }

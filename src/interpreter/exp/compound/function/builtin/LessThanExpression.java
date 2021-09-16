@@ -12,4 +12,9 @@ public class LessThanExpression extends NumberCompareExpression {
         return compare < 0;
     }
 
+    @Override
+    public String toString() {
+        return "<";
+    }
+
 }

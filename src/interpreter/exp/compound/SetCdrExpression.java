@@ -51,4 +51,9 @@ public class SetCdrExpression extends BaseExpression {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(set-cdr! " + target.toString() + " " + value.toString() + ")";
+    }
+
 }

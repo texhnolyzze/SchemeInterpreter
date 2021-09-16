@@ -49,4 +49,9 @@ public class SetExpression extends BaseExpression {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(set! " + name + " " + definition.toString() + ")";
+    }
+
 }

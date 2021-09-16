@@ -9,10 +9,8 @@ import interpreter.exp.compound.function.Macro;
 import interpreter.exp.compound.function.builtin.DisplayExpression;
 import interpreter.exp.self.NewLineExpression;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ApplyExpression extends BaseExpression {
 
@@ -93,6 +91,12 @@ public class ApplyExpression extends BaseExpression {
     public boolean printingFunc(final Environment env) {
         final Expression proc = function.eval(env);
         return proc == DisplayExpression.INSTANCE || proc == NewLineExpression.INSTANCE;
+    }
+
+    @Override
+    public String toString() {
+        final String s = "(" + function;
+        return args.isEmpty() ? s + ")" : s + " " + args.stream().map(Objects::toString).collect(Collectors.joining(" ")) + ")";
     }
 
 }

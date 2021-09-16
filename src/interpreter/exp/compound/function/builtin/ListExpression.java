@@ -40,4 +40,9 @@ public class ListExpression implements BuiltInFunction {
         return head;
     }
 
+    @Override
+    public String toString() {
+        return "list";
+    }
+
 }

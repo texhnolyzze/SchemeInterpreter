@@ -27,4 +27,9 @@ public class CarExpression implements BuiltInFunction {
         return ((PairExpression) arg).car();
     }
 
+    @Override
+    public String toString() {
+        return "car";
+    }
+
 }

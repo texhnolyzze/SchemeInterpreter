@@ -66,4 +66,17 @@ public class DefineExpression extends BaseExpression {
         );
     }
 
+    String name() {
+        return name;
+    }
+
+    Expression definition() {
+        return definition;
+    }
+
+    @Override
+    public String toString() {
+        return "(define " + name + " " + definition.toString() + ")";
+    }
+
 }

@@ -61,4 +61,9 @@ public class UserDefinedFunction implements Function {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(lambda (" + String.join(" ", params) + ") " + body.toString() + ")";
+    }
+
 }

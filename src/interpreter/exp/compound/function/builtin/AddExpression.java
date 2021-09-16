@@ -15,4 +15,9 @@ public class AddExpression extends NumberCombineCopyingExpression {
         return left.add(right);
     }
 
+    @Override
+    public String toString() {
+        return "+";
+    }
+
 }

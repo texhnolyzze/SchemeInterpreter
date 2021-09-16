@@ -29,4 +29,9 @@ public class SubtractExpression extends NumberCombineCopyingExpression {
         return super.modify(args);
     }
 
+    @Override
+    public String toString() {
+        return "-";
+    }
+
 }

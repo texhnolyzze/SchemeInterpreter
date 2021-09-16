@@ -23,4 +23,9 @@ public class RandExpression implements BuiltInFunction {
         return new IntExpression(ThreadLocalRandom.current().nextInt());
     }
 
+    @Override
+    public String toString() {
+        return "rand";
+    }
+
 }

@@ -14,4 +14,9 @@ public class MultiplyAndSetExpression extends NumberCombineModifyingExpression {
         return left.mul(right);
     }
 
+    @Override
+    public String toString() {
+        return "*=";
+    }
+
 }

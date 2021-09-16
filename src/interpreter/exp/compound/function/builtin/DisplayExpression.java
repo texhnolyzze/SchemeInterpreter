@@ -26,4 +26,9 @@ public class DisplayExpression implements BuiltInFunction {
         return NilExpression.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "display";
+    }
+
 }

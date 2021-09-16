@@ -8,6 +8,8 @@ import interpreter.exp.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class LetExpression extends BaseExpression {
 
@@ -76,6 +78,11 @@ public class LetExpression extends BaseExpression {
             formsExpanded.add(forms.get(i).expand(params, env));
         }
         return new LetExpression(initsExpanded, formsExpanded);
+    }
+
+    @Override
+    public String toString() {
+        return "(let (" + inits.stream().map(e -> e.name() + " " + e.definition().toString()).collect(Collectors.joining(" ", "(", ")")) + ") " + forms.stream().map(Objects::toString).collect(Collectors.joining(" ")) + ")";
     }
 
 }

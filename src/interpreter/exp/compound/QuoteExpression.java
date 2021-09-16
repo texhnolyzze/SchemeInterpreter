@@ -89,4 +89,9 @@ public class QuoteExpression extends BaseExpression {
         return new QuoteExpression(arg.expand(params, env));
     }
 
+    @Override
+    public String toString() {
+        return "(quote " + arg.toString() + ")";
+    }
+
 }

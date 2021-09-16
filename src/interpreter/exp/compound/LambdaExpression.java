@@ -52,4 +52,9 @@ public class LambdaExpression extends BaseExpression {
         );
     }
 
+    @Override
+    public String toString() {
+        return "(lambda (" + String.join(" ", params) + ") " + body.toString() + ")";
+    }
+
 }

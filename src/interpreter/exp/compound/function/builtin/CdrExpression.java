@@ -27,4 +27,9 @@ public class CdrExpression implements BuiltInFunction {
         return ((PairExpression) arg).cdr();
     }
 
+    @Override
+    public String toString() {
+        return "cdr";
+    }
+
 }

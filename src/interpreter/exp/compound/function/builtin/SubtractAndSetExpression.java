@@ -14,4 +14,9 @@ public class SubtractAndSetExpression extends NumberCombineModifyingExpression {
         return left.sub(right);
     }
 
+    @Override
+    public String toString() {
+        return "-=";
+    }
+
 }

@@ -15,4 +15,9 @@ public class MultiplyExpression extends NumberCombineCopyingExpression {
         return left.mul(right);
     }
 
+    @Override
+    public String toString() {
+        return "*";
+    }
+
 }

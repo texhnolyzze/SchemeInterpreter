@@ -1,4 +1,8 @@
-(define assert (macro (condition) (if (not condition) (raise "Assertion failed %s" condition) nil)))
+;;General
+
+(define assert (macro (condition) (if (not condition) (raise "Assertion failed %s" `condition) nil)))
+
+(define (display-line x) (display x) (newline))
 
 ;;Stream support
 
@@ -50,8 +54,6 @@
 
 ;; Math functions
 
-(define (abs x) (if (< x 0) (- 0 x) x))
-
 (define (square x) (* x x))
 
 (define gcd (lambda (a b)
@@ -80,7 +82,5 @@
   (cond ((> x 0) x)
         ((= x 0) 0)
         ((< x 0) (- x))))
-
-(define (display-line x) (display x) (newline))
 
 done

@@ -28,6 +28,11 @@ public class QuoteExpression extends BaseExpression {
         this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
     }
 
+    private QuoteExpression(final Expression arg) {
+        super(null);
+        this.arg = arg;
+    }
+
     private Expression quote(Object o) {
         if (o instanceof List<?> list) {
             if (list.isEmpty()) {
@@ -74,6 +79,14 @@ public class QuoteExpression extends BaseExpression {
     @Override
     public Expression eval(Environment env) {
         return arg;
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new QuoteExpression(arg.expand(params, env));
     }
 
 }

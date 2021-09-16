@@ -9,6 +9,7 @@ import interpreter.exp.self.TrueExpression;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CondExpression extends BaseExpression {
 
@@ -32,6 +33,13 @@ public class CondExpression extends BaseExpression {
         }
     }
 
+    private CondExpression(
+        final List<List<Expression>> conditions
+    ) {
+        super(null);
+        this.conditions = conditions;
+    }
+
     @Override
     @SuppressWarnings("ForLoopReplaceableByForEach")
     public Expression eval(Environment env) {
@@ -44,6 +52,23 @@ public class CondExpression extends BaseExpression {
             }
         }
         return FalseExpression.INSTANCE;
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        final List<List<Expression>> conds = new ArrayList<>(conditions.size());
+        for (int i = 0; i < conditions.size(); i++) {
+            final List<Expression> expressions = conditions.get(i);
+            final List<Expression> expanded = new ArrayList<>(expressions.size());
+            for (int j = 0; j < expressions.size(); j++) {
+                expanded.add(expressions.get(j).expand(params, env));
+            }
+            conds.add(expanded);
+        }
+        return new CondExpression(conds);
     }
 
 }

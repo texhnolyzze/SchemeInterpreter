@@ -49,4 +49,16 @@ public class UserDefinedFunction implements Function {
         return myEnvironment.extend(bound);
     }
 
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new UserDefinedFunction(
+            body.expand(params, env),
+            this.params,
+            myEnvironment
+        );
+    }
+
 }

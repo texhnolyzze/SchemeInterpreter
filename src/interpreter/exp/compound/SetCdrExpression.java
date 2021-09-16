@@ -7,6 +7,7 @@ import interpreter.exp.Util;
 import interpreter.exp.self.PairExpression;
 
 import java.util.List;
+import java.util.Map;
 
 public class SetCdrExpression extends BaseExpression {
 
@@ -20,6 +21,15 @@ public class SetCdrExpression extends BaseExpression {
         this.value = analyzer.analyze(list.get(2));
     }
 
+    private SetCdrExpression(
+        final Expression target,
+        final Expression value
+    ) {
+        super(null);
+        this.target = target;
+        this.value = value;
+    }
+
     @Override
     public Expression eval(Environment env) {
         Expression eval = target.eval(env);
@@ -28,6 +38,17 @@ public class SetCdrExpression extends BaseExpression {
         Expression prev = pair.cdr();
         pair.setCdr(value.eval(env));
         return prev;
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new SetCdrExpression(
+            target.expand(params, env),
+            value.expand(params, env)
+        );
     }
 
 }

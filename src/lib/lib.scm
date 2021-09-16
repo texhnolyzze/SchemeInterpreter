@@ -1,6 +1,9 @@
 ;;Stream support
 
-(define (cons-stream x y) (cons x y))
+(define delay (macro (x) (lambda () x)))
+(define force (macro (x) (x)))
+
+(define cons-stream (macro (x y) (cons x (delay y))))
 
 (define (stream-car stream) (car stream))
 
@@ -16,7 +19,14 @@
 		nil
 	(cons-stream
 	    (mapper (stream-car stream))
-	    (delay (stream-map (stream-cdr stream) mapper)))))
+	    (stream-map (stream-cdr stream) mapper))))
+
+(define (stream-map2 s1 s2 mapper)
+    (if (or (null? s1) (null? s2))
+        nil
+    (cons-stream
+        (mapper (stream-car s1) (stream-car s2))
+        (stream-map2 (stream-cdr s1) (stream-cdr s2) mapper))))
 
 (define (stream-filter pred stream)
     (cond   ((null? stream) nil)

@@ -8,6 +8,7 @@ import interpreter.exp.self.NilExpression;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DefineExpression extends BaseExpression {
 
@@ -39,10 +40,30 @@ public class DefineExpression extends BaseExpression {
         }
     }
 
+    private DefineExpression(
+        final String name,
+        final Expression definition
+    ) {
+        super(null);
+        this.name = name;
+        this.definition = definition;
+    }
+
     @Override
     public final Expression eval(Environment env) {
         env.define(name, definition.eval(env));
         return NilExpression.INSTANCE;
+    }
+
+    @Override
+    public DefineExpression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new DefineExpression(
+            name,
+            definition.expand(params, env)
+        );
     }
 
 }

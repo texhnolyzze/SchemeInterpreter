@@ -7,6 +7,7 @@ import interpreter.exp.Util;
 import interpreter.exp.self.NilExpression;
 
 import java.util.List;
+import java.util.Map;
 
 public class SetExpression extends BaseExpression {
 
@@ -22,10 +23,30 @@ public class SetExpression extends BaseExpression {
         this.definition = analyzer.analyze(list.get(2));
     }
 
+    private SetExpression(
+        final String name,
+        final Expression definition
+    ) {
+        super(null);
+        this.name = name;
+        this.definition = definition;
+    }
+
     @Override
     public Expression eval(Environment env) {
         env.set(name, definition.eval(env));
         return NilExpression.INSTANCE;
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new SetExpression(
+            name,
+            definition.expand(params, env)
+        );
     }
 
 }

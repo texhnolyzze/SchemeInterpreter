@@ -51,7 +51,7 @@ public abstract class BaseExpression implements Expression {
 
     @Override
     public String toString() {
-        return src.toString();
+        return src == null ? super.toString() : src.toString();
     }
 
     protected static class TrampolineCtx {

@@ -7,6 +7,7 @@ import interpreter.exp.Util;
 import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
+import java.util.Map;
 
 public class IfExpression extends BaseExpression {
 
@@ -22,6 +23,17 @@ public class IfExpression extends BaseExpression {
         this.alternative = analyzer.analyze(list.get(3));
     }
 
+    private IfExpression(
+        final Expression predicate,
+        final Expression consequent,
+        final Expression alternative
+    ) {
+        super(null);
+        this.predicate = predicate;
+        this.consequent = consequent;
+        this.alternative = alternative;
+    }
+
     @Override
     public Expression eval(Environment env) {
         Expression eval = predicate.eval(env);
@@ -29,6 +41,18 @@ public class IfExpression extends BaseExpression {
             return trampoline(consequent, env);
         }
         return trampoline(alternative, env);
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new IfExpression(
+            predicate.expand(params, env),
+            consequent.expand(params, env),
+            alternative.expand(params, env)
+        );
     }
 
 }

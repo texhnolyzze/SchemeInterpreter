@@ -7,6 +7,7 @@ import interpreter.exp.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LetExpression extends BaseExpression {
 
@@ -36,6 +37,15 @@ public class LetExpression extends BaseExpression {
         }
     }
 
+    private LetExpression(
+        final List<DefineExpression> inits,
+        final List<Expression> forms
+    ) {
+        super(null);
+        this.inits = inits;
+        this.forms = forms;
+    }
+
     @Override
     public Expression eval(final Environment env) {
         for (int i = 0; i < inits.size(); i++) {
@@ -50,6 +60,22 @@ public class LetExpression extends BaseExpression {
             }
         }
         throw new AssertionError();
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        final List<DefineExpression> initsExpanded = new ArrayList<>(inits.size());
+        final List<Expression> formsExpanded = new ArrayList<>(forms.size());
+        for (int i = 0; i < inits.size(); i++) {
+            initsExpanded.add(inits.get(i).expand(params, env));
+        }
+        for (int i = 0; i < forms.size(); i++) {
+            formsExpanded.add(forms.get(i).expand(params, env));
+        }
+        return new LetExpression(initsExpanded, formsExpanded);
     }
 
 }

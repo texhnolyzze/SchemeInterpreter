@@ -7,6 +7,7 @@ import interpreter.exp.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SequenceExpression extends BaseExpression {
 
@@ -21,6 +22,13 @@ public class SequenceExpression extends BaseExpression {
         }
     }
 
+    private SequenceExpression(
+        final List<Expression> seq
+    ) {
+        super(null);
+        this.seq = seq;
+    }
+
     @Override
     public Expression eval(Environment env) {
         for (int i = 0;;) {
@@ -31,6 +39,18 @@ public class SequenceExpression extends BaseExpression {
                 return trampoline(e, env);
             }
         }
+    }
+
+    @Override
+    public SequenceExpression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        final List<Expression> expanded = new ArrayList<>(seq.size());
+        for (int i = 0; i < seq.size(); i++) {
+            expanded.add(seq.get(i).expand(params, env));
+        }
+        return new SequenceExpression(expanded);
     }
 
 }

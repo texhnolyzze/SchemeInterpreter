@@ -8,6 +8,7 @@ import interpreter.exp.self.NilExpression;
 import interpreter.exp.self.TrueExpression;
 
 import java.util.List;
+import java.util.Map;
 
 public class AssertExpression extends BaseExpression {
 
@@ -22,6 +23,11 @@ public class AssertExpression extends BaseExpression {
         this.expr = analyzer.analyze(list.get(1));
     }
 
+    private AssertExpression(final Expression expr) {
+        super(null);
+        this.expr = expr;
+    }
+
     @Override
     public Expression eval(final Environment env) {
         final Expression eval = expr.eval(env);
@@ -29,6 +35,14 @@ public class AssertExpression extends BaseExpression {
             throw new IllegalArgumentException("Assertion failed: " + eval);
         }
         return NilExpression.INSTANCE;
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new AssertExpression(expr.expand(params, env));
     }
 
 }

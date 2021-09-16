@@ -20,15 +20,14 @@ public abstract class NumberCombineExpression implements BuiltInFunction {
         NumberExpression prev = null;
         NumberExpression res = null;
         for (int i = 0; i < args.size(); i++) {
-            Expression e = args.get(i);
-            Expression eval = e.eval(env);
-            Util.assertNotNull(eval);
-            Util.assertType(eval, NumberExpression.class);
+            final Expression arg = args.get(i).eval(env);
+            Util.assertNotNull(arg);
+            Util.assertType(arg, NumberExpression.class);
             if (res == null) {
-                NumberExpression number = (NumberExpression) eval;
+                NumberExpression number = (NumberExpression) arg;
                 res = mustCopy() ? number.copy() : number;
             } else {
-                res = combine(res, ((NumberExpression) eval));
+                res = combine(res, ((NumberExpression) arg));
                 if (prev != res) {
                     onTypeChanged(env, prev, res);
                 }

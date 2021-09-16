@@ -5,6 +5,7 @@ import interpreter.Environment;
 import interpreter.exp.Expression;
 
 import java.util.List;
+import java.util.Map;
 
 public class BeginExpression extends BaseExpression {
 
@@ -15,9 +16,22 @@ public class BeginExpression extends BaseExpression {
         this.seq = new SequenceExpression(1, list, analyzer);
     }
 
+    private BeginExpression(final SequenceExpression seq) {
+        super(null);
+        this.seq = seq;
+    }
+
     @Override
     public Expression eval(Environment env) {
         return seq.eval(env);
+    }
+
+    @Override
+    public Expression expand(
+        final Map<String, Expression> params,
+        final Environment env
+    ) {
+        return new BeginExpression(seq.expand(params, env));
     }
 
 }

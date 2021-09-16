@@ -148,7 +148,7 @@ public class Driver {
         predefined.put("/=", DivideAndSetExpression.class);
         predefined.put("%=", ModAndSetExpression.class);
         predefined.put("cond", CondExpression.class);
-        predefined.put("assert", AssertExpression.class);
+        predefined.put("raise", RaiseExpression.class);
         predefined.put("pair?", IsPairExpression.class);
         predefined.put("remainder", ModExpression.class);
         predefined.put("newline", NewLineExpression.class);
@@ -156,6 +156,7 @@ public class Driver {
         predefined.put(">=", GreaterThanOrEqualExpression.class);
         predefined.put("let", LetExpression.class);
         predefined.put("macro", MacroExpression.class);
+        predefined.put("rand", RandExpression.class);
         Driver driver = new Driver(rootEnvironment, predefined, InOut.create(System.in, System.out, System.err));
         driver.start();
     }

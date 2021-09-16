@@ -1,3 +1,5 @@
+(define assert (macro (condition) (if (not condition) (raise "Assertion failed %s" condition) nil)))
+
 ;;Stream support
 
 (define delay (macro (x) (lambda () x)))

@@ -16,7 +16,6 @@ public class LambdaExpression extends BaseExpression {
 
     @SuppressWarnings({"rawtypes", "unchecked", "ForLoopReplaceableByForEach"})
     public LambdaExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertAtLeastNumArgs(list, 2);
         Util.assertList(list.get(1));
         this.params = (List) list.get(1);
@@ -31,7 +30,6 @@ public class LambdaExpression extends BaseExpression {
         final List<String> params,
         final SequenceExpression body
     ) {
-        super(null);
         this.params = params;
         this.body = body;
     }

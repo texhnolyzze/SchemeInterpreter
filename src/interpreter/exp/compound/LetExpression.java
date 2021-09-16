@@ -20,7 +20,6 @@ public class LetExpression extends BaseExpression {
         final List<?> list,
         final Analyzer analyzer
     ) {
-        super(list);
         Util.assertAtLeastNumArgs(list, 2);
         Util.assertList(list.get(1));
         final List<?> lets = (List<?>) list.get(1);
@@ -43,7 +42,6 @@ public class LetExpression extends BaseExpression {
         final List<DefineExpression> inits,
         final List<Expression> forms
     ) {
-        super(null);
         this.inits = inits;
         this.forms = forms;
     }

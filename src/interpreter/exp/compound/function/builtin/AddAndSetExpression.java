@@ -7,7 +7,6 @@ public class AddAndSetExpression extends NumberCombineModifyingExpression {
     public static final AddAndSetExpression INSTANCE = new AddAndSetExpression();
 
     private AddAndSetExpression() {
-        super();
     }
 
     @Override

@@ -15,7 +15,6 @@ public class SetCarExpression extends BaseExpression {
     private final Expression value;
 
     public SetCarExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertNumArgs(list, 2);
         this.target = analyzer.analyze(list.get(1));
         this.value = analyzer.analyze(list.get(2));
@@ -25,7 +24,6 @@ public class SetCarExpression extends BaseExpression {
         final Expression target,
         final Expression value
     ) {
-        super(null);
         this.target = target;
         this.value = value;
     }

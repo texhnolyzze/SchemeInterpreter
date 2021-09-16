@@ -15,7 +15,6 @@ public class SetExpression extends BaseExpression {
     private final Expression definition;
 
     public SetExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertNumArgs(list, 2);
         Util.assertSymbol(list.get(1));
         assertNotPredefined(list.get(1), analyzer);
@@ -27,7 +26,6 @@ public class SetExpression extends BaseExpression {
         final String name,
         final Expression definition
     ) {
-        super(null);
         this.name = name;
         this.definition = definition;
     }

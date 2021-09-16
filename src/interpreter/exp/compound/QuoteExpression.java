@@ -23,13 +23,11 @@ public class QuoteExpression extends BaseExpression {
     private final Expression arg;
 
     public QuoteExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertNumArgs(list, 1);
         this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
     }
 
     private QuoteExpression(final Expression arg) {
-        super(null);
         this.arg = arg;
     }
 

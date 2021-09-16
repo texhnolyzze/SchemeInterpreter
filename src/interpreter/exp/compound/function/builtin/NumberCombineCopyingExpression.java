@@ -6,7 +6,6 @@ import interpreter.exp.self.NumberExpression;
 public abstract class NumberCombineCopyingExpression extends NumberCombineExpression {
 
     protected NumberCombineCopyingExpression() {
-        super();
     }
 
     @Override

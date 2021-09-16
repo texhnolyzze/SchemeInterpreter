@@ -12,12 +12,6 @@ public abstract class BaseExpression implements Expression {
 
     protected static final ThreadLocal<Boolean> IN_TRAMPOLINE = new ThreadLocal<>();
 
-    private final List<?> src;
-
-    protected BaseExpression(List<?> list) {
-        this.src = list;
-    }
-
     protected void assertNotPredefined(Object o, Analyzer analyzer) {
         if (analyzer.predefined().containsKey(o)) {
             throw new IllegalArgumentException(o + " is predefined, can't overwrite");
@@ -47,11 +41,6 @@ public abstract class BaseExpression implements Expression {
         } finally {
             IN_TRAMPOLINE.set(false);
         }
-    }
-
-    @Override
-    public String toString() {
-        return src == null ? super.toString() : src.toString();
     }
 
     protected static class TrampolineCtx {

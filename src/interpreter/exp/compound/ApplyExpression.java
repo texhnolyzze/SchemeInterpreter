@@ -18,7 +18,6 @@ public class ApplyExpression extends BaseExpression {
     private final List<Expression> args;
 
     public ApplyExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         this.function = analyzer.analyze(list.get(0));
         this.args = new ArrayList<>(0);
         for (int i = 1; i < list.size(); i++) {
@@ -30,7 +29,6 @@ public class ApplyExpression extends BaseExpression {
         final Expression function,
         final List<Expression> args
     ) {
-        super(null);
         this.function = function;
         this.args = args;
     }

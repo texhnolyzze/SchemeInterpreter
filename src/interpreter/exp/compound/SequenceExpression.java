@@ -16,7 +16,6 @@ public class SequenceExpression extends BaseExpression {
     private final List<Expression> seq;
 
     SequenceExpression(int index, List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertAtLeastNumArgs(index, list, 1);
         this.seq = new ArrayList<>(1);
         for (int i = index; i < list.size(); i++) {
@@ -27,7 +26,6 @@ public class SequenceExpression extends BaseExpression {
     private SequenceExpression(
         final List<Expression> seq
     ) {
-        super(null);
         this.seq = seq;
     }
 

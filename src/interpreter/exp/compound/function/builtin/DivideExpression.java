@@ -7,7 +7,6 @@ public class DivideExpression extends NumberCombineCopyingExpression {
     public static final DivideExpression INSTANCE = new DivideExpression();
 
     private DivideExpression() {
-        super();
     }
 
     @Override

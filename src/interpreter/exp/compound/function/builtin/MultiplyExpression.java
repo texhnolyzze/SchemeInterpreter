@@ -7,7 +7,6 @@ public class MultiplyExpression extends NumberCombineCopyingExpression {
     public static final MultiplyExpression INSTANCE = new MultiplyExpression();
 
     private MultiplyExpression() {
-        super();
     }
 
     @Override

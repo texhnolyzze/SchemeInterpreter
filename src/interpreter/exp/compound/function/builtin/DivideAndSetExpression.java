@@ -7,7 +7,6 @@ public class DivideAndSetExpression extends NumberCombineModifyingExpression {
     public static final DivideAndSetExpression INSTANCE = new DivideAndSetExpression();
 
     private DivideAndSetExpression() {
-        super();
     }
 
     @Override

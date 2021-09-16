@@ -7,7 +7,7 @@
 ;;Stream support
 
 (define delay (macro (x) (lambda () x)))
-(define force (macro (x) (x)))
+(define (force x) (x))
 
 (define cons-stream (macro (x y) (cons x (delay y))))
 

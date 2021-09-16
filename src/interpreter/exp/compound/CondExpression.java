@@ -17,7 +17,6 @@ public class CondExpression extends BaseExpression {
     private final List<List<Expression>> conditions;
 
     public CondExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertAtLeastNumArgs(list, 1);
         this.conditions = new ArrayList<>(2);
         for (int i = 1; i < list.size(); i++) {
@@ -37,7 +36,6 @@ public class CondExpression extends BaseExpression {
     private CondExpression(
         final List<List<Expression>> conditions
     ) {
-        super(null);
         this.conditions = conditions;
     }
 

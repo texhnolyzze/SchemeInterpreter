@@ -16,7 +16,6 @@ public class WhileExpression extends BaseExpression {
     private final SequenceExpression body;
 
     public WhileExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertAtLeastNumArgs(list, 2);
         this.predicate = analyzer.analyze(list.get(1));
         this.body = new SequenceExpression(2, list, analyzer);
@@ -26,7 +25,6 @@ public class WhileExpression extends BaseExpression {
         final Expression predicate,
         final SequenceExpression body
     ) {
-        super(null);
         this.predicate = predicate;
         this.body = body;
     }
@@ -48,6 +46,11 @@ public class WhileExpression extends BaseExpression {
             predicate.expand(params, env),
             body.expand(params, env)
         );
+    }
+
+    @Override
+    public String toString() {
+        return "(while " + predicate.toString() + " " + body.toString() + ")";
     }
 
 }

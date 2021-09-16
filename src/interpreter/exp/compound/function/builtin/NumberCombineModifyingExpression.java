@@ -9,7 +9,6 @@ import java.util.Map;
 public abstract class NumberCombineModifyingExpression extends NumberCombineExpression {
 
     protected NumberCombineModifyingExpression() {
-        super();
     }
 
     @Override

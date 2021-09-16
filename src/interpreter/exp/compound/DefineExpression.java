@@ -17,7 +17,6 @@ public class DefineExpression extends BaseExpression {
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     public DefineExpression(List<?> list, Analyzer analyzer) {
-        super(list);
         Util.assertAtLeastNumArgs(list, 2);
         if (list.get(1) instanceof List<?> func) { // function definition
             Util.assertAtLeastNumArgs(0, func, 1);
@@ -44,7 +43,6 @@ public class DefineExpression extends BaseExpression {
         final String name,
         final Expression definition
     ) {
-        super(null);
         this.name = name;
         this.definition = definition;
     }

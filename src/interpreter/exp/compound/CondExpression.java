@@ -18,13 +18,13 @@ public class CondExpression extends BaseExpression {
     private final List<List<Expression>> conditions;
 
     public CondExpression(List<?> list, Analyzer analyzer) {
-        Util.assertAtLeastNumArgs(list, 1, this);
+        Util.assertAtLeastNumArgs(list, 1);
         this.conditions = new ArrayList<>(2);
         for (int i = 1; i < list.size(); i++) {
             Object o = list.get(i);
             Util.assertList(o);
             List<?> condition = (List<?>) o;
-            Util.assertNumArgs(0, condition, 2, this);
+            Util.assertNumArgs(0, condition, 2);
             final boolean isElse = condition.get(0).equals("else");
             if (isElse && i != list.size() - 1) {
                 throw new EvaluationException("'else' must be last statement in 'cond' expression");

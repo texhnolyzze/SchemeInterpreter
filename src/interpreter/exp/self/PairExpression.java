@@ -37,7 +37,26 @@ public class PairExpression extends SelfEvaluatingExpression {
 
     @Override
     public String toString() {
-        return "(" + car + " " + cdr + ")";
+        final StringBuilder builder = new StringBuilder();
+        builder.append('(');
+        PairExpression curr = this;
+        while (true) {
+            builder.append(curr.car);
+            builder.append(' ');
+            if (curr.cdr instanceof PairExpression pe) {
+                curr = pe;
+            } else {
+                if (curr.cdr != NilExpression.INSTANCE) {
+                    builder.append(curr.cdr);
+                }
+                break;
+            }
+        }
+        if (builder.charAt(builder.length() - 1) == ' ') {
+            builder.setLength(builder.length() - 1);
+        }
+        builder.append(')');
+        return builder.toString();
     }
 
     @Override

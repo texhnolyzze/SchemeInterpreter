@@ -21,7 +21,7 @@ public class OrExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertAtLeastNumArgs(0, args, 2, this);
+        Util.assertAtLeastNumArgs(0, args, 2);
         for (int i = 0; i < args.size(); i++) {
             final Expression e = args.get(i);
             final Expression eval = e.eval(env);

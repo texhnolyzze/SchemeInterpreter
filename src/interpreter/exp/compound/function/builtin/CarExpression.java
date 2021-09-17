@@ -20,10 +20,10 @@ public class CarExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 1, this);
+        Util.assertNumArgs(0, args, 1);
         final Expression arg = args.get(0).eval(env);
-        Util.assertNotNull(arg, this);
-        Util.assertType(arg, PairExpression.class, this);
+        Util.assertNotNull(arg);
+        Util.assertType(arg, PairExpression.class);
         return ((PairExpression) arg).car();
     }
 

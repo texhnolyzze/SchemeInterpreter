@@ -22,7 +22,7 @@ public class IsNilExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 1, this);
+        Util.assertNumArgs(0, args, 1);
         final Expression arg = args.get(0).eval(env);
         return arg.eval(env) == NilExpression.INSTANCE ?
                TrueExpression.INSTANCE :

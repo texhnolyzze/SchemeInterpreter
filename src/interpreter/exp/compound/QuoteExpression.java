@@ -22,7 +22,7 @@ public class QuoteExpression extends BaseExpression {
     private final Expression arg;
 
     public QuoteExpression(List<?> list) {
-        Util.assertNumArgs(list, 1, this);
+        Util.assertNumArgs(list, 1);
         this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
     }
 

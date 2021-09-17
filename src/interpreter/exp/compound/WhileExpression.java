@@ -16,7 +16,7 @@ public class WhileExpression extends BaseExpression {
     private final SequenceExpression body;
 
     public WhileExpression(List<?> list, Analyzer analyzer) {
-        Util.assertAtLeastNumArgs(list, 2, this);
+        Util.assertAtLeastNumArgs(list, 2);
         this.predicate = analyzer.analyze(list.get(1));
         this.body = new SequenceExpression(2, list, analyzer);
     }

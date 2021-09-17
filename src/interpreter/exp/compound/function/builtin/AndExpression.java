@@ -21,7 +21,7 @@ public class AndExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertAtLeastNumArgs(0, args, 2, this);
+        Util.assertAtLeastNumArgs(0, args, 2);
         for (int i = 0; i < args.size(); i++) {
             Expression e = args.get(i);
             Expression eval = e.eval(env);

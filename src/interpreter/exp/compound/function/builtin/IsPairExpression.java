@@ -22,7 +22,7 @@ public class IsPairExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 1, this);
+        Util.assertNumArgs(0, args, 1);
         final Expression eval = args.get(0).eval(env);
         return eval instanceof PairExpression ?
                TrueExpression.INSTANCE :

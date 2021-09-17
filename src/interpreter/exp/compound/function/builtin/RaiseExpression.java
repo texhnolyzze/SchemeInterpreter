@@ -22,7 +22,7 @@ public class RaiseExpression implements BuiltInFunction {
         final List<Expression> args
     ) {
         final Expression msg = args.get(0).eval(env);
-        Util.assertType(msg, StringExpression.class, this);
+        Util.assertType(msg, StringExpression.class);
         final Object[] formatArgs = args.stream().skip(1).map(e -> e.eval(env)).toArray();
         throw new EvaluationException(
             String.format(

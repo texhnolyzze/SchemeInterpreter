@@ -16,7 +16,7 @@ public class SequenceExpression extends BaseExpression {
     private final List<Expression> seq;
 
     SequenceExpression(int index, List<?> list, Analyzer analyzer) {
-        Util.assertAtLeastNumArgs(index, list, 1, this);
+        Util.assertAtLeastNumArgs(index, list, 1);
         this.seq = new ArrayList<>(1);
         for (int i = index; i < list.size(); i++) {
             this.seq.add(analyzer.analyze(list.get(i)));

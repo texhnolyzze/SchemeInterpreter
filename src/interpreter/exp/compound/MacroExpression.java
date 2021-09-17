@@ -15,7 +15,7 @@ public class MacroExpression extends BaseExpression {
     private final SequenceExpression body;
 
     public MacroExpression(final List<?> list, final Analyzer analyzer) {
-        Util.assertAtLeastNumArgs(list, 2, this);
+        Util.assertAtLeastNumArgs(list, 2);
         Util.assertList(list.get(1));
         this.params = ((List<?>) list.get(1)).stream().peek(Util::assertSymbol).map(String.class::cast).toList();
         this.body = new SequenceExpression(2, list, analyzer);

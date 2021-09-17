@@ -81,8 +81,8 @@ public class ApplyExpression extends BaseExpression {
 
     private Function lookupFunc(Environment env) {
         Expression exp = function.eval(env);
-        Util.assertNotNull(exp, this);
-        Util.assertType(exp, Function.class, this);
+        Util.assertNotNull(exp);
+        Util.assertType(exp, Function.class);
         return (Function) exp;
     }
 

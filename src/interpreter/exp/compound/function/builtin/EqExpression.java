@@ -21,7 +21,7 @@ public class EqExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 2, this);
+        Util.assertNumArgs(0, args, 2);
         return args.get(0).eval(env) == args.get(1).eval(env) ?
                TrueExpression.INSTANCE :
                FalseExpression.INSTANCE;

@@ -39,7 +39,7 @@ public class UserDefinedFunction implements Function {
         final List<Expression> args,
         final Environment callerEnvironment
     ) {
-        assertNumArgs(0, args, params.size(), this);
+        assertNumArgs(0, args, params.size());
         final Map<String, Expression> bound = new HashMap<>(params.size());
         for (int i = 0; i < params.size(); i++) {
             final String param = params.get(i);

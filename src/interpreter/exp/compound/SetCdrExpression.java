@@ -15,7 +15,7 @@ public class SetCdrExpression extends BaseExpression {
     private final Expression value;
 
     public SetCdrExpression(List<?> list, Analyzer analyzer) {
-        Util.assertNumArgs(list, 2, this);
+        Util.assertNumArgs(list, 2);
         this.target = analyzer.analyze(list.get(1));
         this.value = analyzer.analyze(list.get(2));
     }
@@ -31,7 +31,7 @@ public class SetCdrExpression extends BaseExpression {
     @Override
     public Expression eval(Environment env) {
         Expression eval = target.eval(env);
-        Util.assertType(eval, PairExpression.class, this);
+        Util.assertType(eval, PairExpression.class);
         PairExpression pair = (PairExpression) eval;
         Expression prev = pair.cdr();
         pair.setCdr(value.eval(env));

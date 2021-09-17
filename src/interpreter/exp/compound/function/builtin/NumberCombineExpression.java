@@ -21,8 +21,8 @@ public abstract class NumberCombineExpression implements BuiltInFunction {
         NumberExpression res = null;
         for (int i = 0; i < args.size(); i++) {
             final Expression arg = args.get(i).eval(env);
-            Util.assertNotNull(arg, this);
-            Util.assertType(arg, NumberExpression.class, this);
+            Util.assertNotNull(arg);
+            Util.assertType(arg, NumberExpression.class);
             if (res == null) {
                 NumberExpression number = (NumberExpression) arg;
                 res = mustCopy() ? number.copy() : number;

@@ -16,7 +16,7 @@ public class IfExpression extends BaseExpression {
     private final Expression alternative;
 
     public IfExpression(List<?> list, Analyzer analyzer) {
-        Util.assertNumArgs(list, 3, this);
+        Util.assertNumArgs(list, 3);
         this.predicate = analyzer.analyze(list.get(1));
         this.consequent = analyzer.analyze(list.get(2));
         this.alternative = analyzer.analyze(list.get(3));

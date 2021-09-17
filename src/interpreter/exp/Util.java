@@ -22,54 +22,49 @@ public final class Util {
     public static void assertNumArgs(
         final int offset,
         final List<?> args,
-        final int expected,
-        final Expression source
+        final int expected
     ) {
         if (args.size() - offset != expected) {
-            throw new EvaluationException(source + ": Expected " + expected + " args, got " + (args.size() - offset));
+            throw new EvaluationException("Expected " + expected + " args, got " + (args.size() - offset));
         }
     }
 
     public static void assertNumArgs(
         final List<?> args,
-        final int expected,
-        final Expression source
+        final int expected
     ) {
-        assertNumArgs(1, args, expected, source);
+        assertNumArgs(1, args, expected);
     }
 
     public static void assertAtLeastNumArgs(
         final int offset,
         final List<?> args,
-        final int expected,
-        final Expression source
+        final int expected
     ) {
         if (args.size() - offset < expected) {
-            throw new EvaluationException(source + ": Expected at least " + expected + " args, got " + (args.size() - offset));
+            throw new EvaluationException("Expected at least " + expected + " args, got " + (args.size() - offset));
         }
     }
 
     public static void assertAtLeastNumArgs(
         final List<?> args,
-        final int expected,
-        final Expression source
+        final int expected
     ) {
-        assertAtLeastNumArgs(1, args, expected, source);
+        assertAtLeastNumArgs(1, args, expected);
     }
 
     public static void assertType(
         final Object obj,
-        final Class<?> expected,
-        final Expression source
+        final Class<?> expected
     ) {
         if (!expected.isAssignableFrom(obj.getClass())) {
-            throw new EvaluationException(source + ": Expected arg type is " + expected.getSimpleName() + ", actual is " + obj.getClass().getSimpleName());
+            throw new EvaluationException("Expected arg type is " + expected.getSimpleName() + ", actual is " + obj.getClass().getSimpleName());
         }
     }
 
-    public static void assertNotNull(final Expression expression, final Expression source) {
+    public static void assertNotNull(final Expression expression) {
         if (expression == NilExpression.INSTANCE) {
-            throw new EvaluationException(source + ": null pointer dereference");
+            throw new EvaluationException("null pointer dereference");
         }
     }
 

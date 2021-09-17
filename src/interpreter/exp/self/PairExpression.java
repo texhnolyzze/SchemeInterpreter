@@ -1,6 +1,9 @@
 package interpreter.exp.self;
 
+import interpreter.Environment;
 import interpreter.exp.Expression;
+
+import java.util.Map;
 
 public class PairExpression extends SelfEvaluatingExpression {
 
@@ -35,6 +38,14 @@ public class PairExpression extends SelfEvaluatingExpression {
     @Override
     public String toString() {
         return "(" + car + " " + cdr + ")";
+    }
+
+    @Override
+    public Expression expand(final Map<String, Expression> params, final Environment env) {
+        return new PairExpression(
+            car.expand(params, env),
+            cdr.expand(params, env)
+        );
     }
 
 }

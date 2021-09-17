@@ -20,13 +20,13 @@ public abstract class NumberCompareExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 2);
+        Util.assertNumArgs(0, args, 2, this);
         final Expression left = args.get(0).eval(env);
-        Util.assertNotNull(left);
-        Util.assertType(left, NumberExpression.class);
+        Util.assertNotNull(left, this);
+        Util.assertType(left, NumberExpression.class, this);
         final Expression right = args.get(1).eval(env);
-        Util.assertNotNull(right);
-        Util.assertType(right, NumberExpression.class);
+        Util.assertNotNull(right, this);
+        Util.assertType(right, NumberExpression.class, this);
         final long cmp = ((NumberExpression) left).compare(((NumberExpression) right));
         return matches(cmp) ? TrueExpression.INSTANCE : FalseExpression.INSTANCE;
     }

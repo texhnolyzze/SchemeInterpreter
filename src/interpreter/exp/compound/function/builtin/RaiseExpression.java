@@ -1,6 +1,7 @@
 package interpreter.exp.compound.function.builtin;
 
 import interpreter.Environment;
+import interpreter.EvaluationException;
 import interpreter.exp.Expression;
 import interpreter.exp.Util;
 import interpreter.exp.compound.function.BuiltInFunction;
@@ -21,9 +22,9 @@ public class RaiseExpression implements BuiltInFunction {
         final List<Expression> args
     ) {
         final Expression msg = args.get(0).eval(env);
-        Util.assertType(msg, StringExpression.class);
+        Util.assertType(msg, StringExpression.class, this);
         final Object[] formatArgs = args.stream().skip(1).map(e -> e.eval(env)).toArray();
-        throw new IllegalArgumentException(
+        throw new EvaluationException(
             String.format(
                 msg.toString(),
                 formatArgs

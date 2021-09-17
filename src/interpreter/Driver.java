@@ -35,22 +35,30 @@ public class Driver {
         inOut.out().println(
             """
             This is a simple Scheme evaluator implemented in Java language
-            To use it just write as many Scheme expressions as you want and then type 'done' on the new line.
+            To use it just write as many Scheme expressions as you want and hit 'Enter'.
             To exit just type 'exit' on the new line.
             """
         );
         installLibrary();
         BufferedReader r = new BufferedReader(new InputStreamReader(inOut.in()));
-        loop(r, false, "We're done too", true);
+        loop(r, false, true);
     }
 
-    private void loop(BufferedReader r, boolean breakOnDone, String messageOnDone, boolean print) throws IOException {
+    private void loop(
+        final BufferedReader r,
+        final boolean breakOnDone,
+        final boolean print
+    ) throws IOException {
         String s;
         StringBuilder next = new StringBuilder();
         while (true) {
-            s = r.readLine().strip();
-            if (s.equals("done")) {
-                process(next, messageOnDone, print);
+            s = r.readLine();
+            if (s == null) {
+                break;
+            }
+            s = s.strip();
+            if (s.equals("")) {
+                process(next, print);
                 if (breakOnDone) {
                     break;
                 }
@@ -66,11 +74,15 @@ public class Driver {
         InputStream old = inOut.in();
         BufferedInputStream in = new BufferedInputStream(Files.newInputStream(Path.of(".", "src", "lib", "lib.scm")));
         inOut.setIn(in);
-        loop(new BufferedReader(new InputStreamReader(in)), true, "\nStandard library installed", false);
+        loop(new BufferedReader(new InputStreamReader(in)), true, false);
+        inOut.out().println("Standard library installed");
         inOut.setIn(old);
     }
 
-    private void process(StringBuilder next, String messageOnDone, boolean print) {
+    private void process(
+        final StringBuilder next,
+        final boolean print
+    ) {
         try {
             long total = 0L;
             long start = System.currentTimeMillis();
@@ -83,10 +95,11 @@ public class Driver {
             }
             long end = System.currentTimeMillis();
             total += (end - start);
-            inOut.out().println(messageOnDone);
             inOut.out().println("Run time " + total + " ms");
-        } catch (IllegalArgumentException e) {
-            inOut.err().println("Error during evaluation: " + e.getMessage());
+        } catch (ParseException e) {
+            inOut.err().println("Parsing error: " + e.getMessage());
+        } catch (EvaluationException e) {
+            inOut.err().println("Evaluation error: " + e.getMessage());
         }
         next.setLength(0);
     }

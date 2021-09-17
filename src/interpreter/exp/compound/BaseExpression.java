@@ -2,6 +2,7 @@ package interpreter.exp.compound;
 
 import interpreter.Analyzer;
 import interpreter.Environment;
+import interpreter.EvaluationException;
 import interpreter.exp.Expression;
 import interpreter.exp.compound.function.Function;
 import interpreter.exp.compound.function.UserDefinedFunction;
@@ -14,7 +15,7 @@ public abstract class BaseExpression implements Expression {
 
     protected void assertNotPredefined(Object o, Analyzer analyzer) {
         if (analyzer.predefined().containsKey(o)) {
-            throw new IllegalArgumentException(o + " is predefined, can't overwrite");
+            throw new EvaluationException(o + " is predefined, can't overwrite");
         }
     }
 

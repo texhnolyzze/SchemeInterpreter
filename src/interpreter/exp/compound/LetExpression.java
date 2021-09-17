@@ -20,10 +20,10 @@ public class LetExpression extends BaseExpression {
         final List<?> list,
         final Analyzer analyzer
     ) {
-        Util.assertAtLeastNumArgs(list, 2);
+        Util.assertAtLeastNumArgs(list, 2, this);
         Util.assertList(list.get(1));
         final List<?> lets = (List<?>) list.get(1);
-        Util.assertAtLeastNumArgs(0, lets, 1);
+        Util.assertAtLeastNumArgs(0, lets, 1, this);
         this.inits = new ArrayList<>(lets.size());
         for (int i = 0; i < lets.size(); i++) {
             final Object o = lets.get(i);

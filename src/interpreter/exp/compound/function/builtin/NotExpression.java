@@ -20,10 +20,10 @@ public class NotExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 1);
+        Util.assertNumArgs(0, args, 1, this);
         final Expression eval = args.get(0).eval(env);
-        Util.assertNotNull(eval);
-        Util.assertType(eval, BooleanExpression.class);
+        Util.assertNotNull(eval, this);
+        Util.assertType(eval, BooleanExpression.class, this);
         return ((BooleanExpression) eval).not();
     }
 

@@ -37,7 +37,7 @@ public record Environment(
             }
             env = env.parent;
         } while (env != null);
-        throw new IllegalArgumentException("Variable " + key + " is undefined");
+        throw new EvaluationException("Variable " + key + " is undefined");
     }
 
     public Expression lookup(String key) {
@@ -49,7 +49,7 @@ public record Environment(
             }
             env = env.parent;
         } while (env != null);
-        throw new IllegalArgumentException("Variable " + key + " is undefined");
+        throw new EvaluationException("Variable " + key + " is undefined");
     }
 
     public static Environment create(Map<String, Expression> bindings) {

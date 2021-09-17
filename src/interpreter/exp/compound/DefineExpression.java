@@ -17,9 +17,9 @@ public class DefineExpression extends BaseExpression {
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     public DefineExpression(List<?> list, Analyzer analyzer) {
-        Util.assertAtLeastNumArgs(list, 2);
+        Util.assertAtLeastNumArgs(list, 2, this);
         if (list.get(1) instanceof List<?> func) { // function definition
-            Util.assertAtLeastNumArgs(0, func, 1);
+            Util.assertAtLeastNumArgs(0, func, 1, this);
             assertNotPredefined(func.get(0), analyzer);
             for (int i = 0; i < func.size(); i++) {
                 Object param = func.get(i);

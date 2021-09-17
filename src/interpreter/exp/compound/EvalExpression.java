@@ -14,7 +14,7 @@ public class EvalExpression extends BaseExpression {
     private final Analyzer analyzer;
 
     public EvalExpression(List<?> list, Analyzer analyzer) {
-        Util.assertNumArgs(list, 1);
+        Util.assertNumArgs(list, 1, this);
         this.expression = analyzer.analyze(list.get(1));
         this.analyzer = analyzer;
     }

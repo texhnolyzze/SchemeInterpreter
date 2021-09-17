@@ -2,6 +2,7 @@ package interpreter.exp.compound;
 
 import interpreter.Analyzer;
 import interpreter.Environment;
+import interpreter.EvaluationException;
 import interpreter.exp.Expression;
 import interpreter.exp.Util;
 import interpreter.exp.self.FalseExpression;
@@ -17,16 +18,16 @@ public class CondExpression extends BaseExpression {
     private final List<List<Expression>> conditions;
 
     public CondExpression(List<?> list, Analyzer analyzer) {
-        Util.assertAtLeastNumArgs(list, 1);
+        Util.assertAtLeastNumArgs(list, 1, this);
         this.conditions = new ArrayList<>(2);
         for (int i = 1; i < list.size(); i++) {
             Object o = list.get(i);
             Util.assertList(o);
             List<?> condition = (List<?>) o;
-            Util.assertNumArgs(0, condition, 2);
+            Util.assertNumArgs(0, condition, 2, this);
             final boolean isElse = condition.get(0).equals("else");
             if (isElse && i != list.size() - 1) {
-                throw new IllegalArgumentException("'else' must be last statement in 'cond' expression");
+                throw new EvaluationException("'else' must be last statement in 'cond' expression");
             }
             Expression predicate = isElse ? TrueExpression.INSTANCE : analyzer.analyze(condition.get(0));
             this.conditions.add(List.of(predicate, analyzer.analyze(condition.get(1))));

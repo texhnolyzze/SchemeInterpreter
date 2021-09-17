@@ -1,5 +1,7 @@
 package interpreter.exp.self;
 
+import interpreter.EvaluationException;
+
 public class DecimalExpression extends NumberExpression {
 
     private double value;
@@ -56,7 +58,7 @@ public class DecimalExpression extends NumberExpression {
         try {
             this.value %= right.doubleValue();
         } catch (ArithmeticException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
         return this;
     }
@@ -66,7 +68,7 @@ public class DecimalExpression extends NumberExpression {
         try {
             this.value /= right.doubleValue();
         } catch (ArithmeticException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
         return this;
     }

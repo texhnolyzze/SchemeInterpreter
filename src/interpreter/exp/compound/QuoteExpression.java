@@ -1,6 +1,5 @@
 package interpreter.exp.compound;
 
-import interpreter.Analyzer;
 import interpreter.Environment;
 import interpreter.exp.Expression;
 import interpreter.exp.Util;
@@ -22,8 +21,8 @@ public class QuoteExpression extends BaseExpression {
 
     private final Expression arg;
 
-    public QuoteExpression(List<?> list, Analyzer analyzer) {
-        Util.assertNumArgs(list, 1);
+    public QuoteExpression(List<?> list) {
+        Util.assertNumArgs(list, 1, this);
         this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
     }
 

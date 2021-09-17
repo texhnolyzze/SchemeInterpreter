@@ -21,7 +21,7 @@ public class DisplayExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 1);
+        Util.assertNumArgs(0, args, 1, this);
         InOut.instance().out().print(args.get(0).eval(env));
         return NilExpression.INSTANCE;
     }

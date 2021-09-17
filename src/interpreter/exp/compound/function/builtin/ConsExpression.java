@@ -20,7 +20,7 @@ public class ConsExpression implements BuiltInFunction {
         final Environment env,
         final List<Expression> args
     ) {
-        Util.assertNumArgs(0, args, 2);
+        Util.assertNumArgs(0, args, 2, this);
         final Expression car = args.get(0).eval(env);
         final Expression cdr = args.get(1).eval(env);
         return PairExpression.cons(car, cdr);

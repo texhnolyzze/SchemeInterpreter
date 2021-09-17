@@ -7,15 +7,17 @@ import java.util.List;
 
 public class LispReader {
 
-    public List<Object> read(String exp) {
-        if (exp.isBlank())
+    public List<Object> read(final String exp) {
+        if (exp.isBlank()) {
             return Collections.emptyList();
-        List<Object> result = new ArrayList<>(1);
+        }
+        final List<Object> result = new ArrayList<>(1);
         int from = 0;
         do {
-            Object[] next = read(exp, from, 0);
-            if (next[0] != null)
+            final Object[] next = read(exp, from, 0);
+            if (next[0] != null) {
                 result.add(next[0]);
+            }
             from = (int) next[1];
         } while (from < exp.length());
         return result;
@@ -43,8 +45,9 @@ public class LispReader {
                         break;
                     }
                     readingString = finalizeString(stack, next);
-                } else
+                } else {
                     next.append(c);
+                }
             } else {
                 throwOn(c == '\\', "Unexpected backslash", i);
                 if (c == '`' || c == '\'') {
@@ -53,13 +56,13 @@ public class LispReader {
                             result = cons(next.toString(), i);
                         } else {
                             Object[] read = read(exp, i + 1, depth + 1);
-                            throwOn(read == null, "Empty quotation", i);
+                            throwOn(read[0] == null, "Empty quotation", i);
                             result = cons(List.of("quote", read[0]), (int) read[1]);
                         }
                         break;
                     } else {
                         Object[] read = read(exp, i + 1, depth + 1);
-                        throwOn(read == null, "Empty quotation", i);
+                        throwOn(read[0] == null, "Empty quotation", i);
                         stack.peek().add(List.of("quote", read[0]));
                         i = (int) read[1] - 1;
                     }
@@ -77,8 +80,9 @@ public class LispReader {
                     stack.push(list);
                 } else if (c == ')') {
                     if (stack.isEmpty() && depth != 0) {
-                        if (readingSymbol)
+                        if (readingSymbol) {
                             result = cons(next.toString(), i);
+                        }
                         break;
                     }
                     throwOn(parenthesis.isEmpty(), "Missing open parenthesis", i);
@@ -120,10 +124,11 @@ public class LispReader {
         throwOn(readingString, "Unclosed string literal starting", stringStart);
         throwOn(!stack.isEmpty(), "Unexpected EOF");
         if (result == null) {
-            if (readingSymbol)
+            if (readingSymbol) {
                 result = cons(next.toString(), exp.length());
-            else
+            } else {
                 result = cons(null, i);
+            }
         }
         return result;
     }
@@ -163,13 +168,13 @@ public class LispReader {
 
     private void throwOn(boolean cond, String msg, int position) {
         if (cond) {
-            throw new IllegalArgumentException(msg + " at " + position);
+            throw new ParseException(msg + " at " + position);
         }
     }
 
     private void throwOn(boolean cond, String msg) {
         if (cond) {
-            throw new IllegalArgumentException(msg);
+            throw new ParseException(msg);
         }
     }
 

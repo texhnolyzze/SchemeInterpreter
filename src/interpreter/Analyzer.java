@@ -54,12 +54,7 @@ public class Analyzer {
             } else if (FalseExpression.INSTANCE.toString().equals(s)) {
                 return FalseExpression.INSTANCE;
             } else if (predefined.containsKey(s) && BuiltInFunction.class.isAssignableFrom(predefined.get(s))) {
-                final Class<? extends Expression> c = predefined.get(s);
-                try {
-                    return (Expression) c.getField("INSTANCE").get(c);
-                } catch (IllegalAccessException | NoSuchFieldException e) {
-                    throw new AssertionError();
-                }
+                return instance(predefined.get(s));
             } else {
                 return new VariableExpression(s);
             }
@@ -69,33 +64,35 @@ public class Analyzer {
 
     private Expression analyzeList(List<Object> exp) {
         if (exp.isEmpty()) {
-            throw new IllegalArgumentException("Empty expression");
+            throw new EvaluationException("Empty expression");
         }
         Object type = exp.get(0);
         Class<? extends Expression> c = predefined.get(type);
         if (c != null) {
             if (SelfEvaluatingExpression.class.isAssignableFrom(c)) {
-                try {
-                    return (Expression) c.getField("INSTANCE").get(c);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new AssertionError();
-                }
+                return instance(c);
             } else if (BuiltInFunction.class.isAssignableFrom(c)) {
                 return new ApplyExpression(exp, this);
             } else {
                 Constructor<? extends Expression> constructor = constructors.computeIfAbsent(
                     c,
-                    clazz -> (Constructor<? extends Expression>) clazz.getDeclaredConstructors()[0]
+                    clazz -> (Constructor<? extends Expression>) clazz.getConstructors()[0]
                 );
                 final Class<?>[] params = constructor.getParameterTypes();
                 try {
                     if (params.length == 2 && params[0] == List.class && params[1] == Analyzer.class) {
                         return constructor.newInstance(exp, this);
+                    } else if (params.length == 1 && params[0] == List.class) {
+                        return constructor.newInstance(exp);
                     } else {
                         throw new AssertionError();
                     }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    return fail((IllegalArgumentException) e.getCause());
+                    if (e.getCause() instanceof EvaluationException ee) {
+                        throw ee;
+                    } else {
+                        throw new AssertionError(e);
+                    }
                 }
             }
         } else {
@@ -103,8 +100,12 @@ public class Analyzer {
         }
     }
 
-    private <T> T fail(IllegalArgumentException e) {
-        throw e;
+    private Expression instance(final Class<? extends Expression> c) {
+        try {
+            return (Expression) c.getField("INSTANCE").get(c);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new AssertionError(e);
+        }
     }
 
     public Map<String, Class<? extends Expression>> predefined() {

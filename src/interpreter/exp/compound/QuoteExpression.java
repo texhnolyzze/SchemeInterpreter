@@ -8,22 +8,16 @@ import interpreter.exp.self.PairExpression;
 import interpreter.exp.self.SymbolExpression;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class QuoteExpression extends BaseExpression {
 
-    /**
-     * Interpreter is single-threaded, so no need to use ConcurrentMap
-     */
-    private static final Map<Object, Expression> INTERNED = new HashMap<>();
-
     private final Expression arg;
 
     public QuoteExpression(List<?> list) {
         Util.assertNumArgs(list, 1);
-        this.arg = INTERNED.computeIfAbsent(list.get(1), o -> quote(list.get(1)));
+        this.arg = quote(list.get(1));
     }
 
     private QuoteExpression(final Expression arg) {
@@ -33,10 +27,10 @@ public class QuoteExpression extends BaseExpression {
     private Expression quote(Object o) {
         if (o instanceof List<?> list) {
             if (list.isEmpty()) {
-                return  NilExpression.INSTANCE;
+                return NilExpression.INSTANCE;
             } else {
                 PairExpression curr = PairExpression.cons(NilExpression.INSTANCE, NilExpression.INSTANCE);
-                PairExpression head = curr;
+                final PairExpression head = curr;
                 for (int i = 0;;) {
                     Object next = list.get(i++);
                     curr.setCar(quote(next));
@@ -51,14 +45,18 @@ public class QuoteExpression extends BaseExpression {
                 return head;
             }
         } else {
-            return new SymbolExpression((String) o);
+            return SymbolExpression.valueOf((String) o);
         }
     }
 
-    public static Object unquote(Expression exp) {
+    public Object unquote() {
+        return unquote(arg);
+    }
+
+    private Object unquote(final Expression exp) {
         if (exp instanceof PairExpression pair) {
             Expression curr;
-            List<Object> res = new ArrayList<>(8);
+            final List<Object> res = new ArrayList<>(8);
             do {
                 res.add(unquote(pair.car()));
                 curr = pair.cdr();
@@ -83,7 +81,9 @@ public class QuoteExpression extends BaseExpression {
         final Map<String, Expression> params,
         final Environment env
     ) {
-        return new QuoteExpression(arg.expand(params, env));
+        return new QuoteExpression(
+            arg.expand(params, env)
+        );
     }
 
     @Override

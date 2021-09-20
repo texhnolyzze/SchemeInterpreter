@@ -14,6 +14,7 @@ import java.util.Map;
 public class QuoteExpression extends BaseExpression {
 
     private final Expression arg;
+    private Object unquoted;
 
     public QuoteExpression(List<?> list) {
         Util.assertNumArgs(list, 1);
@@ -50,7 +51,10 @@ public class QuoteExpression extends BaseExpression {
     }
 
     public Object unquote() {
-        return unquote(arg);
+        if (unquoted == null) {
+            unquoted = unquote(arg);
+        }
+        return unquoted;
     }
 
     private Object unquote(final Expression exp) {

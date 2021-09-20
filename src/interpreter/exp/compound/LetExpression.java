@@ -5,10 +5,7 @@ import interpreter.Environment;
 import interpreter.exp.Expression;
 import interpreter.exp.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LetExpression extends BaseExpression {
@@ -48,15 +45,16 @@ public class LetExpression extends BaseExpression {
 
     @Override
     public Expression eval(final Environment env) {
+        final Environment extended = env.extend(Collections.emptyMap());
         for (int i = 0; i < inits.size(); i++) {
             final DefineExpression exp = inits.get(i);
-            exp.eval(env);
+            exp.eval(extended);
         }
         for (int i = 0; i < forms.size(); i++) {
             if (i == forms.size() - 1) {
-                return trampoline(forms.get(i), env);
+                return trampoline(forms.get(i), extended);
             } else {
-                forms.get(i).eval(env);
+                forms.get(i).eval(extended);
             }
         }
         throw new AssertionError();

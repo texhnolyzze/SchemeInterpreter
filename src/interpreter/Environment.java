@@ -32,7 +32,7 @@ public record Environment(
     ) {
         Environment env = this;
         do {
-            if (bindings.computeIfPresent(key, (k, v) -> val) == val) {
+            if (env.bindings.computeIfPresent(key, (keyUnused, valueUnused) -> val) == val) {
                 return;
             }
             env = env.parent;

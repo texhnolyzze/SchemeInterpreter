@@ -58,8 +58,15 @@ public class DefineExpression extends BaseExpression {
         final Map<String, Expression> params,
         final Environment env
     ) {
+        final String nme;
+        final Expression nameParam = params.get(name);
+        if (nameParam == null) {
+            nme = name;
+        } else {
+            nme = nameParam.toString();
+        }
         return new DefineExpression(
-            name,
+            nme,
             definition.expand(params, env)
         );
     }

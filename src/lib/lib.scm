@@ -1,6 +1,7 @@
 ;;General
 (define assert (macro (condition) (if (not condition) (raise "Assertion failed %s" `condition) nil)))
 (define (display-line x) (display x) (newline))
+(define swap (macro (x y) (let ((tmp x)) (set! x y) (set! y tmp))))
 ;;Stream support
 (define delay (macro (x) (lambda () x)))
 (define force (macro (x) (x)))

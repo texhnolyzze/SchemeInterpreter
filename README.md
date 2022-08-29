@@ -41,7 +41,7 @@ So this operators take the leftmost operand and modify it's value
 ```
 (define x (delay (1) (2) (3))) 
    is just 
-(define x (lambda () (1) (2) (3)))
+(define x (lambda () (1) (2) (3))) 
 ```
 
 ```

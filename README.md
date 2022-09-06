@@ -20,7 +20,7 @@ or (if no function name explicitly provided):
 ((cdr pair) 1)
 ```
 
-5) Also single `while` cycle:
+5) Also single `while` cycle: 
 
 ```
 (define i 0)
